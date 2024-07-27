@@ -12,22 +12,49 @@ import AgoraRTC, {
   useRemoteAudioTracks,
   useRemoteUsers,
 } from "agora-rtc-react";
+import React,{useState} from 'react'
+import { useRouter, usePathname } from 'next/navigation';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import toast from 'react-hot-toast';
+import { firestore } from '@/lib/firebase';
 
 function Call(props) {
   const client = useRTCClient(
     AgoraRTC.createClient({ codec: "vp8", mode: "rtc" })
   );
+  
+  const router = useRouter();
+  const params = usePathname();
+  const docId  = params.split("/")[2]
+  const endingVideoCall = async () => {
+    try {
+      const docRef = doc(firestore, "videoCalls", docId);
+      const updateData = { calltoken: false };
+      await updateDoc(docRef, updateData);
+      toast.success('Call ended');
+      
+      if (params === "/") {
+        router.push("/");
+      } else {
+        router.back();
+      }
+    } catch (error) {
+      toast.error('Error updating document: ' + error.message);
+      toast.success(docId)
+    }
+  };
+
 
   return (
     <AgoraRTCProvider client={client}>
       <Videos channelName={props.channelName} appId={props.appId} />
       <div className="fixed z-10 bottom-0 left-0 right-0 flex justify-center pb-4">
-        <a
+        <button
           className="px-5 py-3 text-base font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-500 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 w-40"
-          href="/"
+         onClick={endingVideoCall}
         >
           End Call
-        </a>
+        </button>
       </div>
     </AgoraRTCProvider>
   );

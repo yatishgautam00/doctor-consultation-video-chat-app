@@ -14,6 +14,7 @@ import AnswerVideoCall from "./components/AnswerVideoCall";
 import { Suspense } from "react";
 import Loading from "./loading";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
@@ -32,7 +33,9 @@ export default function RootLayout({ children }) {
   const [docId, setDocId] = useState(null);
   const [user1id, setUser1id] = useState(null);
   const [callStatus, setCallStatus] = useState(null);
-  // toast.success(isDmPath)
+  const [showAnswerVideoCall, setShowAnswerVideoCall] = useState(false);
+
+
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -54,7 +57,7 @@ export default function RootLayout({ children }) {
         } catch (error) {
           console.error("Error fetching user document: ", error);
         }
-
+        
         // Fetch video call data
         try {
           const q = query(
@@ -69,9 +72,10 @@ export default function RootLayout({ children }) {
               setUser2idDoc(data.user2id);
               setCalltokendoc(data.calltoken);
               setUser1id(data.user1id);
-              setCallStatus(data.callStatus);
               setDocId(doc.id);
-              toast.success(`Call for user2id: ${data.user2id}`);
+              setShowAnswerVideoCall(true);
+              toast.success(`Call for user2id: ${data.user2id.name}`);
+            
             });
           }, (error) => {
             console.error("Error fetching video calls: ", error);
@@ -98,12 +102,20 @@ export default function RootLayout({ children }) {
         <meta name="description" content={metadata.description} />
       </head>
       <body className={inter.className}>
-        {user2idDoc === id1 && calltokendoc && !callStatus && <AnswerVideoCall docId={docId} user1id={user1id} />}
+        {showAnswerVideoCall && user2idDoc === id1 && calltokendoc && (
+          <AnswerVideoCall 
+            docId={docId} 
+            user1id={user1id} 
+            onClose={() => setShowAnswerVideoCall(false)} 
+          />
+        )}
         <Toaster position='bottom-center' />
-        {!isDmPath && !isConsultation && !isExample && <Header />}
+        {!isDmPath && !isConsultation && <Header />}
         <Suspense fallback={<Loading />}>{children}</Suspense>
-        {!isDmPath && !isConsultation && !isExample && <Footer />}
+        {!isDmPath && !isConsultation && <Footer />}
       </body>
     </html>
   );
 }
+
+
