@@ -7,9 +7,10 @@ import { collection, getDocs } from 'firebase/firestore';
 import { Button } from '@/components/ui/button'
 import { FaUserGraduate } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import Appointment from "@/app/components/Appointment";
 
 function DoctorDetail({doctorList}) {
- 
+    const isSpace =" "
     const params1 = usePathname();
     const doctorId = params1.split("/")[2];
     const socialMediaList = [
@@ -65,7 +66,9 @@ function DoctorDetail({doctorList}) {
                         height={30}/>
                     ))}
                 </div>
-                <Button className='mt-3 rounded-full'>Book Appointment</Button>
+                <Button className='mt-3 hrounded-full '>
+                   <Appointment/>
+                </Button>
                         {/* about doctor */}
                 <div>
                     <h2 className='font-bold text-[20px]'>

@@ -83,7 +83,7 @@ const toggleShowAll = () => {
             href={"/search/"+category.category}
             key={index}
            
-            className="flex flex-col mx-1 text-center gap-3 text-center mt-2 items-center  "
+            className="flex flex-col mx-1  gap-3 text-center mt-2 items-center  "
           > 
             <Image
               src={category.url}

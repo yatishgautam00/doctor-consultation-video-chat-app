@@ -37,8 +37,13 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import toast from "react-hot-toast";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
-export default function Home({ user1id }) {
+export default function VideoCallButton() {
+  const [user1id, setUser1id] = useState(null);
+  const [user1role, setUser1role] = useState(null);
   const router = useRouter();
   const [users, setUsers] = useState([]);
   const [user2id, setUser2id] = useState([]);
@@ -47,6 +52,7 @@ export default function Home({ user1id }) {
   const params = usePathname();
   const isPath = params.split("/");
   const isConsultation = params[0];
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const tasksQuery = query(collection(firestore, "users"));
@@ -55,6 +61,24 @@ export default function Home({ user1id }) {
       const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setUsers(users);
     });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUser(user);
+        // Fetch the user image from Firestore
+        const userDoc = await getDoc(doc(firestore, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUser1role(userData.role);
+          setUser1id(user.uid);
+        }
+      }
+    });
+
     return () => unsubscribe();
   }, []);
 
@@ -73,7 +97,6 @@ export default function Home({ user1id }) {
           user1id: user1id,
           user2id: user2id,
           calltoken: true,
-         
         });
         setDocId(docRef.id);
 
@@ -93,16 +116,8 @@ export default function Home({ user1id }) {
       <DialogTrigger className="flex hover:text-primary">
         <div className="text-3xl pr-3 ">
           <RiVideoAddFill />
-          {/* <button
-        className="flex hover:text-primary"
-        onClick={handleVideoCall}
-      ></button> */}
         </div>
-        <span
-          className={`${
-            params === "/consultation" ? "hidden" : ""
-          }`}
-        >
+        <span className={`${params === "/consultation" ? "hidden" : ""}`}>
           Video Call
         </span>
       </DialogTrigger>
@@ -115,38 +130,70 @@ export default function Home({ user1id }) {
               <CommandList className=" overflow- overflow-y-visible  max-h-96  md:max-h-[400px]">
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup heading="" className="h-full ">
-                  {users.map(
-                    (user, index) =>
-                      user.role === "doctor" &&
-                      !(user1id === user.id) && (
-                        <CommandItem className="  " key={index}>
-                          <button
-                            className={`p-3 shadow-sm w-full cursor-pointer rounded-lg flex items-center gap-3 ${
-                              user.id === user2id
-                                ? "bg-blue-500 text-white"
-                                : "hover:bg-slate-100"
-                            }`}
-                            onClick={() => handleSelectuser2id(user.id)} // Pass user ID to the handler
-                          >
-                            <img
-                              className="w-[70px] h-[70px] rounded-full"
-                              width={60}
-                              height={60}
-                              alt="doctor"
-                              src={user.doctorImg}
-                            />
-                            <div className="mt flex flex-col gap-1">
-                              <h2 className="text-sm font-bold">{user.name}</h2>
-                              <h2 className="text-[14px] text-gray-5">
-                                {user.exp}+ Years
-                              </h2>
-                              <h2 className="text-[10px] text-center font-medium bg-blue-100 p-1 rounded-full px-2 text-primary">
-                                {user.category}
-                              </h2>
-                            </div>
-                          </button>
-                        </CommandItem>
-                      )
+                  {users.map((user, index) =>
+                    user1role === "patient"
+                      ? user.role === "doctor" &&
+                        !(user1id === user.id) && (
+                          <CommandItem className="  " key={index}>
+                            <button
+                              className={`p-3 shadow-sm w-full cursor-pointer rounded-lg flex items-center gap-3 ${
+                                user.id === user2id
+                                  ? "bg-blue-500 text-white"
+                                  : "hover:bg-slate-100"
+                              }`}
+                              onClick={() => handleSelectuser2id(user.id)} // Pass user ID to the handler
+                            >
+                              <img
+                                className="w-[70px] h-[70px] rounded-full"
+                                width={60}
+                                height={60}
+                                alt="doctor"
+                                src={user.doctorImg}
+                              />
+                              <div className="mt flex flex-col gap-1">
+                                <h2 className="text-sm font-bold">
+                                  {user.name}
+                                </h2>
+                                <h2 className="text-[14px] text-gray-5">
+                                  {user.exp}+ Years
+                                </h2>
+                                <h2 className="text-[10px] w-min text-center font-medium bg-blue-100 p-1 rounded-full px-2 text-primary">
+                                  {user.category}
+                                </h2>
+                              </div>
+                            </button>
+                          </CommandItem>
+                        )
+                      : user.role === "patient" &&
+                        !(user1id === user.id) && (
+                          <CommandItem className="  " key={index}>
+                            <button
+                              className={`p-3 shadow-sm w-full cursor-pointer rounded-lg flex items-center gap-3 ${
+                                user.id === user2id
+                                  ? "bg-blue-500 text-white"
+                                  : "hover:bg-slate-100"
+                              }`}
+                              onClick={() => handleSelectuser2id(user.id)} // Pass user ID to the handler
+                            >
+                              <img
+                                className="w-[70px] h-[70px] rounded-full"
+                                width={60}
+                                height={60}
+                                alt="doctor"
+                                src={user.avatarUrl || "/user.png"}
+                              />
+                              <div className="mt flex flex-col gap-1">
+                                <h2 className="text-sm font-bold">
+                                  {user.name}
+                                </h2>
+                                
+                                <h2 className="text-[10px] w-min text-center font-medium bg-green-100 p-1 rounded-full px-2 text-green-700">
+                                  {user.role}
+                                </h2>
+                              </div>
+                            </button>
+                          </CommandItem>
+                        )
                   )}
                 </CommandGroup>
               </CommandList>

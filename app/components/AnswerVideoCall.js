@@ -18,7 +18,11 @@ function AnswerVideoCall({ docId, user1id, onClose }) {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const userData = docSnap.data();
+          if(userData.role ==='doctor'){
           setDoctorImg(userData.doctorImg);
+        }else{
+          setDoctorImg(userData.avatarUrl)
+        }
           setName(userData.name);
         } else {
           console.log("No such document!");
@@ -66,7 +70,7 @@ function AnswerVideoCall({ docId, user1id, onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div>
+      <div className="fixed inset-0 bg-black bg-opacity-70 z-40"></div>
       <div className='fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 bg-background p-2 shadow-lg duration-200 sm:rounded-lg'>
         <div role="alert" className="rounded-xl border border-gray-100 bg-white p-4">
           <div className="flex items-start gap-4">

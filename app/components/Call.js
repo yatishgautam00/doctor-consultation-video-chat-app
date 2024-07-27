@@ -23,6 +23,7 @@ function Call(props) {
     AgoraRTC.createClient({ codec: "vp8", mode: "rtc" })
   );
   
+  
   const router = useRouter();
   const params = usePathname();
   const docId  = params.split("/")[2]
@@ -34,7 +35,7 @@ function Call(props) {
       toast.success('Call ended');
       
       if (params === "/") {
-        router.push("/");
+        router.replace("/");
       } else {
         router.back();
       }

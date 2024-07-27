@@ -98,9 +98,10 @@ console.log(doctorList)
             ) : null;
           }
         })
-      : [1, 2, 3, 4].map((item, index) => (
+      : 
+      [1, 2, 3, ].map((item, index) => (
           <div
-            className="grid grid-cols-2 sm:grid-cols-2 gap-7 align-baseline justify-content-center md:grid-cols-3 lg:grid-cols-4 mt-5 items-center"
+            className="grid grid-cols-2 sm:grid-cols-2 gap-10 align-baseline justify-content-center md:grid-cols-3 lg:grid-cols-3 mt-5 items-center"
             key={index}
           >
             <div className="bg-slate-200 lg:w-[220px] lg:h-[330px] item-center animate-pulse rounded-lg p-3 bg-gray-25">

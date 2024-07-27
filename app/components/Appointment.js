@@ -48,6 +48,8 @@ function Appointment() {
   const [selectedTime, setSelectedTime] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [moreInfo, setMoreInfo] = useState("");
+  const isDetails = params.split("/")[1]
+  
   const timeSlots = [
     "10:30 AM",
     "11:00 AM",
@@ -105,12 +107,14 @@ function Appointment() {
           <button
             title="Appointment"
             variant="outline"
-            className="flex hover:text-primary"
+            className={` ${isDetails ==='details' ? "flex ":"flex hover:text-primary"}`}
           >
-            <div className="text-3xl pr-3 ">
+            <div className={` ${isDetails ==='details' ? "hidden":"text-3xl pr-3"}`}>
               <IoMdListBox />
             </div>
-            Appointment
+            <div className=" flex flex-row gap-1">
+            <span>Book </span>
+           <span> Appointment</span></div>
           </button>
         </AlertDialogTrigger>
         <AlertDialogContent className=" overflow-y-scroll no-scrollbar max-h-full">

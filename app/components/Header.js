@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { IoMdListBox } from "react-icons/io";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
@@ -18,8 +19,11 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { MdManageAccounts } from "react-icons/md";
 import { SiImessage } from "react-icons/si";
 import Appointment from "./Appointment";
+import { usePathname } from "next/navigation";
 
 function Header() {
+  const params = usePathname()
+  const isDetails = params.split('/')[1]
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
   const [role, setRole] = useState(null);
@@ -132,7 +136,12 @@ function Header() {
             </Link>
           <DropdownMenuSeparator />
           {/* appointment component */}
+          {!isDetails ? <Appointment />:
+          <div className='flex hover:text-primary'>
+          <div className='text-3xl pr-3 '><IoMdListBox /></div>
           <Appointment />
+        </div> }
+          
           {/* <AppointmentBook /> */}
             <DropdownMenuSeparator />
           <Link href={`/search/Neurologist`}>
@@ -142,7 +151,7 @@ function Header() {
               </div>
             </Link>
           <DropdownMenuSeparator />
-          <VideoCallButton user1id={user.uid}/>
+          <VideoCallButton/>
           <DropdownMenuSeparator />
             <button
               onClick={handleLogout}
