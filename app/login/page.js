@@ -6,6 +6,8 @@ import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { onAuthStateChanged } from 'firebase/auth';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 function page() {
   const [email, setEmail] = useState('');
@@ -69,7 +71,7 @@ function page() {
       {/*form*/}
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-2xl shadow-lg p-10">
     
-        <h1 className='font-secondary text-xl text-center font-semibold text-[#0b3a65ff]'>Medi<span className='font-bold text-[#eeab63ff]'>2</span>Connect</h1>
+        <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Login to</span> Medi<span className='font-bold text-[#000000]'>2</span>Connect</h1>
 
       
          {/*email*/}
@@ -77,7 +79,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Email</span>
           </label>
-          <input
+          <Input 
             type="text"
             placeholder="Email"
             className="w-full input input-bordered"
@@ -92,7 +94,8 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Password</span>
           </label>
-          <input
+         
+          <Input 
             type="password"
             placeholder="Enter Password"
             className="w-full input input-bordered"
@@ -105,11 +108,11 @@ function page() {
         
 
         <div>
-          <button type='submit' className="btn btn-block bg-[#0b3a65ff] text-white">
+          <Button type='submit' className="btn btn-block text-white">
             {
               loading? <span className="loading loading-spinner loading-sm"></span> : 'Sign In'
             }
-          </button>
+          </Button>
         </div>
 
          <span>

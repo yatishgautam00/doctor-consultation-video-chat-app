@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
   const isDmPath = pathname === "/chats";
   const isConsultation = pathname === "/consultation";
+  const isChannel = pathname.split("/")[1] === "channel";
   const [userImage, setUserImage] = useState(null);
   const [role, setRole] = useState(null);
   const [id1, setId1] = useState(null);
@@ -151,9 +152,9 @@ export default function RootLayout({ children }) {
           />
         )}
         <Toaster position="top-center" />
-        {!isDmPath && !isConsultation && <Header  notificationCount={notificationCount} />}
+        {!isDmPath && !isConsultation && !isChannel && <Header  notificationCount={notificationCount} />}
         <Suspense fallback={<Loading />}>{children}</Suspense>
-        {!isDmPath && !isConsultation && <Footer />}
+        {!isDmPath && !isConsultation && !isChannel && <Footer />}
       </body>
     </html>
   );

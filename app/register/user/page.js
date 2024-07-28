@@ -8,6 +8,8 @@ import { AvatarGenerator } from 'random-avatar-generator';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged } from 'firebase/auth';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 function page() {
     const [name, setName] = useState('');
@@ -105,14 +107,15 @@ function page() {
       {/*form*/}
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-2xl shadow-lg p-10">
     
-        <h1 className='font-secondary text-xl text-center font-semibold text-[#0b3a65ff]'>Medi<span className='font-bold text-[#eeab63ff]'>2</span>Connect</h1>
+      <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Sign-Up to</span> Medi<span className='font-bold text-[#000000]'>2</span>Connect</h1>
+
 
         {/* Display the avatar and refresh button */}
         <div className="flex items-center space-y-2 justify-between border border-gray-200 p-2">
           <img src={avatarUrl} alt="Avatar" className=" rounded-full h-20 w-20" />
-          <button type="button" className="btn btn-outline" onClick={handleRefreshAvatar}>
+          <Button type="button" className="btn btn-outline" onClick={handleRefreshAvatar}>
             New Avatar
-          </button>
+          </Button>
         </div>
 
         
@@ -121,10 +124,10 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Name</span>
           </label>
-          <input
+          <Input
             type="text"
             placeholder="Name"
-            className="w-full input input-bordered"
+            className="w-full Input input-bordered"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -136,7 +139,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Email</span>
           </label>
-          <input
+          <Input 
             type="text"
             placeholder="Email"
             className="w-full input input-bordered"
@@ -151,7 +154,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Password</span>
           </label>
-          <input
+          <Input 
             type="password"
             placeholder="Enter Password"
             className="w-full input input-bordered"
@@ -166,7 +169,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Confirm Password</span>
           </label>
-          <input
+          <Input 
             type="password"
             placeholder="Confirm Password"
             className="w-full input input-bordered"
@@ -179,11 +182,11 @@ function page() {
         </div>
 
         <div>
-          <button type='submit' className="btn btn-block bg-[#0b3a65ff] text-white">
+          <Button type='submit' className="btn btn-block  text-white">
             {
               loading? <span className="loading loading-spinner loading-sm"></span> : 'Sign Up'
             }
-          </button>
+          </Button>
         </div>
 
         <span>

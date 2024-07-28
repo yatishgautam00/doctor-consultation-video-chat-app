@@ -29,6 +29,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 
 function page() {
@@ -171,9 +174,8 @@ function page() {
         onSubmit={handleSubmit}
         className="space-y-4 w-full max-w-2xl shadow-lg p-10"
       >
-        <h1 className="font-secondary text-xl text-center font-semibold text-[#0b3a65ff]">
-          Medi<span className="font-bold text-[#eeab63ff]">2</span>Connect
-        </h1>
+              <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Sign-Up as Doctor to</span> Medi<span className='font-bold text-[#000000]'>2</span>Connect</h1>
+
 
         {/* Display the avatar and refresh button */}
         <div className="flex items-center space-y-2 justify-between border border-gray-200 p-2">
@@ -200,7 +202,7 @@ function page() {
             </div>
           )}
 
-          <div className="bg-slate-200 px-6 py-4">
+          <div className=" px-6 py-4">
             <CldUploadWidget
               uploadPreset="ml_default"
               onSuccess={handleSuccess}
@@ -208,9 +210,9 @@ function page() {
             >
               {({ open }) => {
                 return (
-                  <button onClick={() => open()} className="btn btn-outline">
+                  <Button onClick={() => open()} className="btn btn-outline">
                     Upload an Image
-                  </button>
+                  </Button>
                 );
               }}
             </CldUploadWidget>
@@ -225,7 +227,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Name</span>
           </label>
-          <input
+          <Input 
             type="text"
             placeholder="Name"
             className="w-full input input-bordered"
@@ -240,7 +242,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Email</span>
           </label>
-          <input
+          <Input 
             type="text"
             placeholder="Email"
             className="w-full input input-bordered"
@@ -251,11 +253,12 @@ function page() {
         </div>
 
         {/*password*/}
-        <div>
+        <div className="flex lg:flex-row w-full justify-between flex-col gap-3 md:flex-row lg:gap-5">
+        <div className="w-full">
           <label className="label">
             <span className="text-base label-text">Password</span>
           </label>
-          <input
+          <Input 
             type="password"
             placeholder="Enter Password"
             className="w-full input input-bordered"
@@ -268,11 +271,11 @@ function page() {
         </div>
 
         {/*confirm password*/}
-        <div>
+        <div className="w-full">
           <label className="label">
             <span className="text-base label-text">Confirm Password</span>
           </label>
-          <input
+          <Input 
             type="password"
             placeholder="Confirm Password"
             className="w-full input input-bordered"
@@ -284,11 +287,11 @@ function page() {
             <span className="text-red-500">{errors.confirmPassword}</span>
           )}
         </div>
-
+        </div>
         
         <div>
         <AlertDialog>
-          <AlertDialogTrigger value={about}  > <div className='flex flex-col'><span className='bg-slate-200'>Add more details</span>
+          <AlertDialogTrigger value={about}  > <div className='flex flex-col'><span className='bg-sky-800 px-3 py-1 text-white text-md rounded-lg'>Add more details</span>
           {errors.about && <span className="text-red-500">{errors.about}</span>}</div>
           </AlertDialogTrigger>
          
@@ -303,10 +306,10 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950  label-text">Phone</span>
           </label>
-          <input
+          <Input 
             type="text"
             placeholder="Phone number"
-            className="w-full input bg-slate-200 text-slate-800 px-2 py-1 border-1  "
+            className="w-full input  "
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -317,10 +320,10 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950 label-text">Years of Experience</span>
           </label>
-          <input
+          <Input 
             type="number"
-            placeholder="category"
-            className="w-full input bg-slate-200"
+            placeholder="Experience"
+            className="w-full input"
             value={exp}
             onChange={(e) => setExp(e.target.value)}
           />
@@ -333,10 +336,10 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950 label-text">Specialization</span>
           </label>
-          {/* <input
+          {/* <Input 
             type="text"
             placeholder="category"
-            className="w-full input bg-slate-200"
+            className="w-full input"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           /> */}
@@ -363,10 +366,10 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950 label-text">Number of Patients</span>
           </label>
-          <input
+          <Input 
             type="text"
-            placeholder="category"
-            className="w-full input bg-slate-200"
+            placeholder="Total Patients"
+            className="w-full input"
             value={numpatients}
             onChange={(e) => setNumpatients(e.target.value)}
           />
@@ -378,10 +381,10 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950 label-text">Address</span>
           </label>
-          <input
+          <Input 
             type="text"
-            placeholder="category"
-            className="w-full input bg-slate-200"
+            placeholder="Current Address"
+            className="w-full input"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
@@ -392,10 +395,11 @@ function page() {
           <label className="label">
             <span className="text-base text-slate-950 label-text">About</span>
           </label>
-          <input
+          
+          <Textarea 
             type="text"
-            placeholder="category"
-            className="w-full input bg-slate-200"
+            placeholder="About"
+            className="w-full input"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
           />
@@ -415,11 +419,11 @@ function page() {
         </div>
         
         <div>
-          <button type='submit' className="btn btn-block bg-[#0b3a65ff] text-white">
+          <Button type='submit' className="btn btn-block  text-white">
             {
               loading? <span className="loading loading-spinner loading-sm"></span> : 'Sign Up'
             }
-          </button>
+          </Button>
         </div>
 
         <span>
