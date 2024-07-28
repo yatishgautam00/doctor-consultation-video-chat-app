@@ -23,7 +23,8 @@ function ChatSection({
   handleChatSectionToggle,
   user,
   selectedChatroom,
-  showSidebar, handleSidebarToggle 
+  showSidebar,
+  handleSidebarToggle,
 }) {
   const me = selectedChatroom?.myData;
   const other = selectedChatroom?.otherData;
@@ -91,6 +92,23 @@ function ChatSection({
         lastMessage: message ? message : "Image",
       });
 
+      // Prepare notification data
+      const notificationData = {
+        type: "Message",
+        from: me.id,
+        fromName: me.name,
+        time: serverTimestamp(),
+        status: true,
+      };
+
+      // Reference to the recipient's notification document
+      const notificationRef = doc(firestore, "notifications", other.id);
+
+      // Update or create the nested field in the notification document
+      await updateDoc(notificationRef, {
+        [`notificationName.${me.id}`]: notificationData,
+      });
+
       // Clear the input field after sending the message
     } catch (error) {
       console.error("Error sending message:", error.message);
@@ -105,32 +123,53 @@ function ChatSection({
 
   return (
     <>
-    {/* Overlay */}
-    <div
-      className={` ${
-        showSidebar
-          ? "block bg-black bg-opacity-70 fixed inset-0  z-40"
-          : "hidden lg:hidden"
-      }`}
-      onClick={handleSidebarToggle}
-    ></div>
+      {/* Overlay */}
+      <div
+        className={` ${
+          showSidebar
+            ? "block bg-black bg-opacity-70 fixed inset-0  z-40"
+            : "hidden lg:hidden"
+        }`}
+        onClick={handleSidebarToggle}
+      ></div>
 
-    <div className={`fixed  lg:relative flex-1 lg:block bg-slate-50 lg:h-[calc(95dvh)] h-full pt-0 ${showChatSection ? ' inset-0 flex-col flex  w-full  ' : 'hidden lg:block'}`}>
-     
+      <div
+        className={`fixed  lg:relative flex-1 lg:block bg-slate-50 lg:h-[calc(95dvh)] h-full pt-0 ${
+          showChatSection
+            ? " inset-0 flex-col flex  w-full  "
+            : "hidden lg:block"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          <ChatTopbar
+            handleChatSectionToggle={handleChatSectionToggle}
+            other={other}
+          />
+          {/* Messages container with overflow and scroll */}
+          <div
+            ref={messagesContainerRef}
+            className="flex-1 overflow-y-auto p-10 px-3 lg:px-10"
+          >
+            {messages?.map((message) => (
+              <MessageCard
+                key={message.id}
+                message={message}
+                me={me}
+                other={other}
+              />
+            ))}
+          </div>
 
-      <div className='flex flex-col h-full'>
-        <ChatTopbar handleChatSectionToggle={handleChatSectionToggle} other={other}/>
-        {/* Messages container with overflow and scroll */}
-        <div ref={messagesContainerRef} className='flex-1 overflow-y-auto p-10 px-3 lg:px-10'>
-          {messages?.map((message) => (
-            <MessageCard key={message.id} message={message} me={me} other={other} />
-          ))}
+          {/* Input box at the bottom */}
+          <MessageInput
+            sendMessage={sendMessage}
+            message={message}
+            setMessage={setMessage}
+            image={image}
+            setImage={setImage}
+          />
         </div>
-
-        {/* Input box at the bottom */}
-        <MessageInput sendMessage={sendMessage} message={message} setMessage={setMessage} image={image} setImage={setImage} />
       </div>
-    </div>
     </>
   );
 }

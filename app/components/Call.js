@@ -84,30 +84,21 @@ function Videos(props) {
   const unit = "minmax(0, 1fr) ";
 
   return (
-    <div className="flex flex-col justify-between w-full h-screen p-1">
-      <div
-        className={`grid gap-1 flex-1`}
-        style={{
-          gridTemplateColumns:
-            remoteUsers.length > 9
-              ? unit.repeat(4)
-              : remoteUsers.length > 4
-              ? unit.repeat(3)
-              : remoteUsers.length > 1
-              ? unit.repeat(2)
-              : unit,
-        }}
-      >
-        <LocalVideoTrack
-          track={localCameraTrack}
-          play={true}
-          className="w-full h-full"
-        />
-        {remoteUsers.map((user) => (
-          <RemoteUser user={user} />
-        ))}
+    <div className="relative flex flex-wrap w-full h-screen p-1">
+    {remoteUsers.map((user, index) => (
+      <div key={index} className="flex-1 lg:px-5 px-2  py-2 w-full h-full object-cover cursor-pointer">
+        <RemoteUser user={user} />
       </div>
+    ))}
+    <div className="absolute top-5 lg:top-12 lg:left-10 left-5 w-32 h-32 lg:w-40 lg:h-40 z-40 border-gray-100 ">
+    <LocalVideoTrack
+      track={localCameraTrack}
+      play={true}
+    
+    />
     </div>
+  </div>
+  
   );
 }
 

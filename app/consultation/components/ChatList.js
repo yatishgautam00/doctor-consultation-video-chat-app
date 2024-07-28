@@ -7,10 +7,14 @@ import {
   collection,
   onSnapshot,
   query,
+  doc,
   addDoc,
   serverTimestamp,
   where,
+  deleteField,
   getDocs,
+  getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   Tooltip,
@@ -38,6 +42,9 @@ const ChatList = ({
   const [userChatrooms, setUserChatrooms] = useState([]);
   const router = useRouter();
   const auth = getAuth(app);
+  const [notifications, setNotifications] = useState([]);
+  const [notifiedUser, setNotifiedUser ] = useState(null)
+  const [isUnread, setIsUnread] = useState(true)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -127,7 +134,63 @@ const ChatList = ({
       otherData:
         chatroom.usersData[chatroom.users.find((id) => id !== userData.id)],
     };
+
+    console.log(userData.id);
+    console.log(
+      chatroom.usersData[chatroom.users.find((id) => id !== userData.id)].id
+    );
     setSelectedChatroom(data);
+    
+    try {
+      // Fetch the notification document for the current user
+      const notificationRef = doc(firestore, "notifications", userData.id);
+      const notificationDoc = await getDoc(notificationRef);
+
+      if (notificationDoc.exists()) {
+        const data = notificationDoc.data();
+
+        if (
+          data &&
+          data.notificationName &&
+          data.notificationName[
+            chatroom.usersData[chatroom.users.find((id) => id !== userData.id)]
+              .id
+          ]
+        ) {
+          // Create an update object to delete the specific notification
+          const updateObj = {
+            [`notificationName.${
+              chatroom.usersData[
+                chatroom.users.find((id) => id !== userData.id)
+              ].id
+            }`]: deleteField(),
+          };
+
+          // Update the document to delete the notification
+          await updateDoc(notificationRef, updateObj);
+          console.log(
+            `Notification ${
+              chatroom.usersData[
+                chatroom.users.find((id) => id !== userData.id)
+              ]
+            } deleted`
+          );
+
+          // Update the local state to remove the deleted notification
+          setNotifications((prevNotifications) =>
+            prevNotifications.filter(
+              (notification) => notification.id !== notificationId
+            )
+          );
+        } else {
+          console.warn("No such notification to delete");
+        }
+      } else {
+        console.warn("No notification document found for user");
+      }
+    } catch (error) {
+      console.error("Error deleting notifications:", error.message);
+    }
   };
 
   const logoutClick = () => {
@@ -146,12 +209,12 @@ const ChatList = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-            <button
-            onClick={handleSidebarToggle}
-            className="lg:hidden  text-2xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-100"
-          >
-           <IoMenu />
-          </button>
+              <button
+                onClick={handleSidebarToggle}
+                className="lg:hidden  text-2xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-100"
+              >
+                <IoMenu />
+              </button>
             </TooltipTrigger>
             <TooltipContent className="border-2 border-primary">
               <p className="text-primary ">Menu</p>
@@ -197,78 +260,77 @@ const ChatList = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          
         </div>
       </div>
 
       <div className="mt-4">
         {/* Chat List Items */}
         <div>
-        <button onClick={handleChatSectionToggle} className="w-full ">
-
-          {activeTab === "chatrooms" && (
-            <>
-              <h1 className="px-1 w-full text-left  text-base justify-start  flex font-semibold">Connections</h1>
-              {loading && (
-                <div className="flex justify-center items-center h-full">
-                  <span className="loading loading-spinner text-primary"></span>
-                </div>
-              )}
-              {userChatrooms.map(
-                (chatroom) =>
-                  userData?.role === "patient" && (
-                    <div
-                      key={chatroom.id}
-                      onClick={() => {
-                        openChat(chatroom);
-                        
-                      }}
-                    >
-                      <UsersCard
-                        name={
-                          chatroom.usersData[
-                            chatroom.users.find((id) => id !== userData?.id)
-                          ].name
-                        }
-                        avatarUrl={
-                          chatroom.usersData[
-                            chatroom.users.find((id) => id !== userData?.id)
-                          ].doctorImg
-                        }
-                        latestMessage={chatroom.lastMessage}
-                        type={"chat"}
-                      />
-                    </div>
-                  )
-              )}
-              {userChatrooms.map(
-                (chatroom) =>
-                  userData?.role === "doctor" && (
-                    <div
-                      key={chatroom.id}
-                      onClick={() => {
-                        openChat(chatroom);
-                      }}
-                    >
-                      <UsersCard
-                        name={
-                          chatroom.usersData[
-                            chatroom.users.find((id) => id !== userData?.id)
-                          ].name
-                        }
-                        avatarUrl={
-                          chatroom.usersData[
-                            chatroom.users.find((id) => id !== userData?.id)
-                          ].avatarUrl
-                        }
-                        latestMessage={chatroom.lastMessage}
-                        type={"chat"}
-                      />
-                    </div>
-                  )
-              )}
-            </>
-          )}
+          <button onClick={handleChatSectionToggle} className="w-full ">
+            {activeTab === "chatrooms" && (
+              <>
+                <h1 className="px-1 w-full text-left  text-base justify-start  flex font-semibold">
+                  Connections
+                </h1>
+                {loading && (
+                  <div className="flex justify-center items-center h-full">
+                    <span className="loading loading-spinner text-primary"></span>
+                  </div>
+                )}
+                {userChatrooms.map(
+                  (chatroom) =>
+                    userData?.role === "patient" && (
+                      <div
+                        key={chatroom.id}
+                        onClick={() => {
+                          openChat(chatroom);
+                        }}
+                      >
+                        <UsersCard
+                          name={
+                            chatroom.usersData[
+                              chatroom.users.find((id) => id !== userData?.id)
+                            ].name
+                          }
+                          avatarUrl={
+                            chatroom.usersData[
+                              chatroom.users.find((id) => id !== userData?.id)
+                            ].doctorImg
+                          }
+                          latestMessage={chatroom.lastMessage}
+                          type={"chat"}
+                        />
+                      </div>
+                    )
+                )}
+                {userChatrooms.map(
+                  (chatroom) =>
+                    userData?.role === "doctor" && (
+                      <div
+                        key={chatroom.id}
+                        onClick={() => {
+                          openChat(chatroom);
+                        }}
+                      >
+                        <UsersCard
+                          name={
+                            chatroom.usersData[
+                              chatroom.users.find((id) => id !== userData?.id)
+                            ].name
+                          }
+                          avatarUrl={
+                            chatroom.usersData[
+                              chatroom.users.find((id) => id !== userData?.id)
+                            ].avatarUrl
+                          }
+                          latestMessage={chatroom.lastMessage}
+                          type={"chat"}
+                        />
+                      </div>
+                    )
+                )}
+              </>
+            )}
           </button>
           {activeTab === "users" && (
             <>

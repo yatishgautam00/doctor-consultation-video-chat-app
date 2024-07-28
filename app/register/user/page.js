@@ -81,8 +81,12 @@ function page() {
            status:'online',
            role:'patient'
          });
+
+         // Create a new document in the notifications collection for the user
+        const notificationDocRef = doc(firestore, 'notifications', user.uid);
+        await setDoc(notificationDocRef, {});
         
-         router.push('/');
+         router.back();
          setErrors({});
       }
     } catch (error) {

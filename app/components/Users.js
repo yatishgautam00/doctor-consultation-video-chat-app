@@ -9,6 +9,10 @@ import {
   serverTimestamp,
   where,
   getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteField,
 } from "firebase/firestore";
 import { getAuth, signOut } from "firebase/auth";
 import UsersCard from "./UsersCard";
@@ -21,12 +25,15 @@ function Users({ userData, setSelectedChatroom }) {
   const [loading2, setLoading2] = useState(false);
   const [users, setUsers] = useState([]);
   const [userChatrooms, setUserChatrooms] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsArray, setNotificationsArray] = useState([]);
   const router = useRouter();
   const auth = getAuth(app);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
 
   //get all users
   useEffect(() => {
@@ -113,6 +120,53 @@ function Users({ userData, setSelectedChatroom }) {
         chatroom.usersData[chatroom.users.find((id) => id !== userData.id)],
     };
     setSelectedChatroom(data);
+
+    try {
+      // Fetch the notification document for the current user
+      const notificationRef = doc(firestore, "notifications", userData.id);
+      const notificationDoc = await getDoc(notificationRef);
+
+      if (notificationDoc.exists()) {
+        const data = notificationDoc.data();
+
+        if (
+          data &&
+          data.notificationName &&
+          data.notificationName[
+            chatroom.usersData[chatroom.users.find((id) => id !== userData.id)]
+              .id
+          ]
+        ) {
+          // Create an update object to delete the specific notification
+          const updateObj = {
+            [`notificationName.${
+              chatroom.usersData[
+                chatroom.users.find((id) => id !== userData.id)
+              ].id
+            }`]: deleteField(),
+          };
+
+          // Update the document to delete the notification
+          await updateDoc(notificationRef, updateObj);
+          console.log(
+            `Notification ${
+              chatroom.usersData[
+                chatroom.users.find((id) => id !== userData.id)
+              ]
+            } deleted`
+          );
+
+          // Update the local state to remove the deleted notification
+          
+        } else {
+          console.warn("No such notification to delete");
+        }
+      } else {
+        console.warn("No notification document found for user");
+      }
+    } catch (error) {
+      console.error("Error deleting notifications:", error.message);
+    }
   };
 
   const logoutClick = () => {
@@ -124,6 +178,8 @@ function Users({ userData, setSelectedChatroom }) {
         console.error("Error logging out:", error);
       });
   };
+
+  
 
   return (
     <div className="shadow-lg h-screen overflow-auto mt-4 mb-20">
@@ -158,58 +214,26 @@ function Users({ userData, setSelectedChatroom }) {
                 <span className="loading loading-spinner text-primary"></span>
               </div>
             )}
-            {userChatrooms.map(
-              (chatroom) =>
-                userData?.role === "patient" && (
-                  <div
-                    key={chatroom.id}
-                    onClick={() => {
-                      openChat(chatroom);
-                    }}
-                  >
-                    <UsersCard
-                      name={
-                        chatroom.usersData[
-                          chatroom.users.find((id) => id !== userData?.id)
-                        ].name
-                      }
-                      avatarUrl={
-                        chatroom.usersData[
-                          chatroom.users.find((id) => id !== userData?.id)
-                        ].doctorImg
-                      }
-                      latestMessage={chatroom.lastMessage}
-                      type={"chat"}
-                    />
-                  </div>
-                )
-            )}
-            {userChatrooms.map(
-              (chatroom) =>
-                userData?.role === "doctor" && (
-                  <div
-                    key={chatroom.id}
-                    onClick={() => {
-                      openChat(chatroom);
-                    }}
-                  >
-                    <UsersCard
-                      name={
-                        chatroom.usersData[
-                          chatroom.users.find((id) => id !== userData?.id)
-                        ].name
-                      }
-                      avatarUrl={
-                        chatroom.usersData[
-                          chatroom.users.find((id) => id !== userData?.id)
-                        ].avatarUrl
-                      }
-                      latestMessage={chatroom.lastMessage}
-                      type={"chat"}
-                    />
-                  </div>
-                )
-            )}
+            {userChatrooms.map((chatroom) => {
+              const otherUserId = chatroom.users.find(
+                (id) => id !== userData.id
+              );
+              return (
+                <div
+                  key={chatroom.id}
+                  onClick={() => {
+                    openChat(chatroom);
+                  }}
+                >
+                  <UsersCard
+                    name={chatroom.usersData[otherUserId].name}
+                    avatarUrl={chatroom.usersData[otherUserId].doctorImg}
+                    latestMessage={chatroom.lastMessage}
+                    type={"chat"}
+                  />
+                </div>
+              );
+            })}
           </>
         )}
 
@@ -244,7 +268,7 @@ function Users({ userData, setSelectedChatroom }) {
               ))
             }
             {
-              // this is code of doctor
+              // this is code of patient
               users.map((user) => (
                 <div
                   key={user.id}

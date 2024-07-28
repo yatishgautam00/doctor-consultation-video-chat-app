@@ -144,7 +144,9 @@ function page() {
           numpatients,
           category,
         });
-
+        const notificationDocRef = doc(firestore, 'notifications', user.uid);
+        await setDoc(notificationDocRef, {});
+    
         router.push("/");
         setErrors({});
       }
