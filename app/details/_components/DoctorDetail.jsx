@@ -61,6 +61,10 @@ function DoctorDetail({ doctorList, currentUser }) {
     "04:00 PM",
     "04:30 PM",
     "05:00 PM",
+    "05:30 PM",
+    "06:00 PM",
+    "06:30 PM",
+    "07:00 PM",
   ];
 
   const params1 = usePathname();
@@ -135,6 +139,7 @@ function DoctorDetail({ doctorList, currentUser }) {
         expire: false,
         mode: mode,
         date: date.toDateString(),
+        message: moreInfo,
       });
 
       toast.success("Appointment Created Successfully");
@@ -293,6 +298,7 @@ function DoctorDetail({ doctorList, currentUser }) {
                           {time}
                         </Button>
                       ))}
+                      {availableTimes.length ===0&& <p className="text-sm text-red-500 font-medium">No slot available on this day</p>}
                     </div>
                     <Label htmlFor="mode">Mode</Label>
                     <Select value={mode} onValueChange={setMode}>
@@ -329,6 +335,12 @@ function DoctorDetail({ doctorList, currentUser }) {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          <div>
+              <h2 className="font-bold pt-2 text-[20px]">About Me</h2>
+              <p className="text-gray-500 tracking-wide mt-2 text-justify">
+                {selectedDoctor.about}
+              </p>
+            </div>  
         </div>
       </div>
     </>
