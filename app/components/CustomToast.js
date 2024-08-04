@@ -76,16 +76,17 @@ function CustomToast({ myId }) {
   const iconMessage = "💬";
 
   return (
-    <div className="flex flex-col space-y-2 ">
+    <div className="flex flex-col space-y-2  ">
       {notifications.length > 0 &&
         notifications.map((notification, index) =>
           notification.status ? (
             <div
               key={index}
-              className="flex items-center space-x-2 p-3 bg-white dark:bg-gray-800 shadow-lg rounded-lg mb-2 
-              transition-transform transform hover:scale-105 w-96 max-w-full"
+              className="flex items-center space-x-2 p-3 bg-slate-100 border-2 border-[#3db5ff] dark:bg-gray-800 shadow-lg rounded-lg mb-2 
+              transition-transform transform hover:scale-105 w-96 max-w-full border-l-8"
               style={{
-                borderLeft: `5px solid #3db5ff`,
+                borderLeft: '15px solid #3db5ff',
+               // Rounded bottom left
               }}
             >
               <div

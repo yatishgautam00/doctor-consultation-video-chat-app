@@ -73,7 +73,7 @@ function AnswerVideoCall({ docId, user1id, onClose }) {
       <div className="fixed inset-0 bg-black bg-opacity-70 z-40"></div>
       <div className='fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 bg-background p-2 shadow-lg duration-200 sm:rounded-lg'>
         <div role="alert" className="rounded-xl border border-gray-100 bg-white p-4">
-          <div className="flex items-start gap-4">
+          <div className="flex items-start flex-col gap-4">
             <div className='flex flex-row gap-2'>
               <img
                 className="w-[70px] h-[70px] rounded-full"
@@ -81,12 +81,14 @@ function AnswerVideoCall({ docId, user1id, onClose }) {
                 height={40}
                 alt='doctor'
                 src={doctorImg}
-              />
+              /><div className='flex flex-col gap-1 pt-2'>
               <h2 className="block font-medium text-2xl text-gray-900">{name}</h2>
+              <p className="mt-1 text-sm text-gray-700">You have an incoming video call...</p>
+            </div>
             </div>
 
             <div className="flex-1">
-              <p className="mt-1 text-sm text-gray-700">You have an incoming video call.</p>
+              
 
               <div className="mt-4 flex gap-2">
                 <button
@@ -103,22 +105,7 @@ function AnswerVideoCall({ docId, user1id, onClose }) {
               </div>
             </div>
 
-            <button 
-              className="text-gray-500 transition hover:text-gray-600"
-              onClick={onClose}
-            >
-              <span className="sr-only">Dismiss popup</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+          
           </div>
         </div>
       </div>

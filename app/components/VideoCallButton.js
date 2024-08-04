@@ -53,6 +53,7 @@ export default function VideoCallButton() {
   const isPath = params.split("/");
   const isConsultation = params[0];
   const [user, setUser] = useState(null);
+  const isMyAppointment = isPath[1];
 
   useEffect(() => {
     const tasksQuery = query(collection(firestore, "users"));
@@ -114,12 +115,24 @@ export default function VideoCallButton() {
   return (
     <Dialog>
       <DialogTrigger className="flex hover:text-primary">
-        <div className="text-3xl pr-3 ">
-          <RiVideoAddFill />
-        </div>
-        <span className={`${params === "/consultation" ? "hidden" : ""}`}>
-          Video Call
-        </span>
+        {isMyAppointment !== "my-appointments" && (
+          <>
+            <div className="text-3xl pr-3 ">
+              <RiVideoAddFill />
+            </div>
+            <span className={`${params === "/consultation" ? "hidden" : ""}`}>
+              Video Call
+            </span>{" "}
+          </>
+        )}
+        {isMyAppointment === "my-appointments" && (
+          <div className="flex flex-row text-lg">
+            <div className="text-3xl pr-3 ">
+              <RiVideoAddFill />
+            </div>
+            Video Call
+          </div>
+        )}
       </DialogTrigger>
       <DialogContent className="md:h-max sm:h-max">
         <DialogHeader>
@@ -186,7 +199,7 @@ export default function VideoCallButton() {
                                 <h2 className="text-sm font-bold">
                                   {user.name}
                                 </h2>
-                                
+
                                 <h2 className="text-[10px] w-min text-center font-medium bg-green-100 p-1 rounded-full px-2 text-green-700">
                                   {user.role}
                                 </h2>

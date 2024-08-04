@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth, firestore } from "@/lib/firebase";
+import AppointmentList from "@/app/components/AppointmentList";
 
 function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -30,7 +31,7 @@ function page() {
     <div className="">
       {/* <EmailVerification /> */}
 
-      <ChatLayout />
+      Doctor Profile
     </div>
   );
 }

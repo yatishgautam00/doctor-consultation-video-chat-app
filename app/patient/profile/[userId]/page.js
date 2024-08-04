@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth, firestore } from "@/lib/firebase";
 import EmailVerification from "@/app/components/EmailVerification"
+import AppointmentList from "@/app/components/AppointmentList";
 
 function page() {
   const router = useRouter();
@@ -19,7 +20,7 @@ function page() {
     }, [router]);
   return (
     <div>
-      <EmailVerification />
+      User Profile
     </div>
   )
 }

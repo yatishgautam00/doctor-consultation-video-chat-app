@@ -7,9 +7,10 @@ import { SiImessage } from "react-icons/si";
 import Link from "next/link";
 import { BiSolidCategory } from "react-icons/bi";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { FaCalendarAlt } from "react-icons/fa";
 import { auth, firestore } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-
+import { FaCalendarPlus } from "react-icons/fa";
 import {
   Tooltip,
   TooltipContent,
@@ -17,7 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FiLogOut } from "react-icons/fi";
-
+import { FaThList } from "react-icons/fa";
 function SlideBar({ showSidebar, handleSidebarToggle }) {
   const [userImage, setUserImage] = useState(null);
   const [user, setUser] = useState(null);
@@ -80,7 +81,7 @@ function SlideBar({ showSidebar, handleSidebarToggle }) {
           <div className="flex flex-col justify-between w-full pt-4 h-full gap-3">
             <TooltipProvider>
               <div className="flex gap-2 flex-col">
-                <div className="text-3xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-100">
+                <div className="text-3xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-300">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link href={`/`}>
@@ -89,6 +90,30 @@ function SlideBar({ showSidebar, handleSidebarToggle }) {
                     </TooltipTrigger>
                     <TooltipContent className="border-2 border-primary">
                       <p className="text-primary">Home</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <div className="text-3xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-300">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link href={`/my-appointments/${user?.uid}`}>
+                      <FaCalendarAlt />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="border-2 border-primary">
+                      <p className="text-primary">My Appointments</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <div className="text-3xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-300">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link href={`/details/Search_and_Book_Appointment`}>
+                      <FaCalendarPlus />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="border-2 border-primary">
+                      <p className="text-primary">Book Appointment</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
@@ -104,18 +129,7 @@ function SlideBar({ showSidebar, handleSidebarToggle }) {
                     </TooltipContent>
                   </Tooltip>
                 </div>
-                <div className="text-3xl rounded-lg text-black flex justify-center p-5 hover:bg-blue-100">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link href={"/search/Neurologist"}>
-                        <BiSolidCategory />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent className="border-2 border-primary">
-                      <p className="text-primary">Category</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
+            
               </div>
               <div className="flex gap-2 flex-col">
 

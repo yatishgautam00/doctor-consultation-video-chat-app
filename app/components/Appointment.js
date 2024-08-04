@@ -30,16 +30,7 @@ import { IoMdListBox } from "react-icons/io";
 import { now } from "moment";
 import toast from "react-hot-toast";
 import { useRouter,usePathname } from "next/navigation";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+
 
 function Appointment() {
   const router = useRouter();

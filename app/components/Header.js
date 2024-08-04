@@ -1,8 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { FaCalendarPlus } from "react-icons/fa";
 import Link from "next/link";
 import { IoMdListBox } from "react-icons/io";
+import { FaThList } from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
+import { MdChecklist } from "react-icons/md";
 import {
   Popover,
   PopoverContent,
@@ -22,7 +26,7 @@ import { FaHistory } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
 import { MdManageAccounts } from "react-icons/md";
 import { SiImessage } from "react-icons/si";
-import Appointment from "./Appointment";
+
 import { usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { FaCircle } from "react-icons/fa";
@@ -134,6 +138,25 @@ function Header({ notificationCount }) {
             </Link>
 
             <DropdownMenuSeparator />
+            <Link href={`/my-appointments/${user.uid}`}>
+              <div className="flex hover:text-primary">
+                <div className="text-3xl pr-3 ">
+                <FaCalendarAlt />
+                </div>
+                My Appointments
+              </div>
+            </Link>
+            <DropdownMenuSeparator />
+            <Link href={`/details/Search_and_Book_Appointment`}>
+              <div className="flex hover:text-primary">
+                <div className="text-3xl pr-3 ">
+                <FaCalendarPlus />
+                </div>
+                Book Appointment
+            
+              </div>
+            </Link>
+            <DropdownMenuSeparator />
             <Link href={`/consultation`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
@@ -146,25 +169,14 @@ function Header({ notificationCount }) {
             )}
               </div>
             </Link>
-            <DropdownMenuSeparator />
-            {/* appointment component */}
-            {!isDetails ? (
-              <Appointment />
-            ) : (
-              <div className="flex hover:text-primary">
-                <div className="text-3xl pr-3 ">
-                  <IoMdListBox />
-                </div>
-                <Appointment />
-              </div>
-            )}
+            
+            
 
-            {/* <AppointmentBook /> */}
             <DropdownMenuSeparator />
             <Link href={`/search/Neurologist`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
-                  <TbCategoryPlus />
+                <FaThList />
                 </div>
                 Categories
               </div>
