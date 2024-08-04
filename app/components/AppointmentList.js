@@ -260,7 +260,7 @@ function AppointmentList({ userId }) {
                 </div>
                 <div className="flex gap-0 pt-1 flex-col truncate flex-grow">
                   <h3 className="font-semibold flex flex-row gap-2 text-lg overflow-hidden whitespace-nowrap text-ellipsis">
-                    {appointment.doctorName}{" "}
+                    {appointment.userName}{" "}
                     <FaRegEnvelope
                       className="text-2xl pt-1 text-green-500 cursor-pointer"
                       onClick={() => handleShowMessage(appointment.message)}
