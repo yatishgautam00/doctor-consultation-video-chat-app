@@ -373,7 +373,7 @@ function AppointmentList({ userId }) {
                           onClick={() => handleReject(appointment.id)}
                           disabled={appointment.status !== "Pending"}
                         >
-                          Accept
+                          Reject
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
