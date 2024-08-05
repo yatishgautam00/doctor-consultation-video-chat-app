@@ -147,7 +147,7 @@ function Header({ notificationCount }) {
               </div>
             </Link>
             <DropdownMenuSeparator />
-            <Link href={`/details/Search_and_Book_Appointment`}>
+            <Link href={`/details/VFC9RXVkkBc1WqhIXoRop3CBs022`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
                 <FaCalendarPlus />

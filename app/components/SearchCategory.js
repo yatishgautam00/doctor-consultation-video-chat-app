@@ -122,7 +122,7 @@ const toggleShowAll = () => {
           className="flex flex-col text-center gap-2 items-center p-5 
         bg-blue-50 m-3 rounded-lg hover:scale-110 transition-all ease-in-out cursor-pointer justify-center"
         >
-          <label className="text-blue-600 text-sm text-center p-6 rounded-md bg-slate-200 ">See All</label>
+          <label className="text-blue-600 lg:text-xl md:text-sm text-sm text-center p-6 rounded-md ">See All</label>
         </div>
       )}
   
