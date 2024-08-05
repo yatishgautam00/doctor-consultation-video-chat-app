@@ -306,7 +306,6 @@ function AppointmentList({ userId }) {
               </div>
               {appointment.status === "Pending" && (
                 <div className="flex gap-2 lg:w-48 md:w-48 w-full mt-2">
-                  
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
@@ -342,7 +341,7 @@ function AppointmentList({ userId }) {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                
+
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button

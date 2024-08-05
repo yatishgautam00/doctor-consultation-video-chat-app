@@ -128,14 +128,14 @@ function Header({ notificationCount }) {
             )}
           </PopoverTrigger>
           <PopoverContent className="text-lg flex flex-col gap-2 w-64 mr-4">
-            <Link href={`/${role}/profile/${user.uid}`}>
+            {/* <Link href={`/${role}/profile/${user.uid}`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
                   <MdManageAccounts />
                 </div>
                 Profile
               </div>
-            </Link>
+            </Link> */}
 
             <DropdownMenuSeparator />
             <Link href={`/my-appointments/${user.uid}`}>
