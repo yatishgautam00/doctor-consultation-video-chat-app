@@ -69,14 +69,14 @@ function SlideBar({ showSidebar, handleSidebarToggle }) {
       <div
         className={` lg:relative lg:flex flex-col 
           w-16 h-full bg-gray-200 rounded-l-md lg:w-20
-           border-r-[1px] border-slate-300
+           border-r-[1px] border-slate-300 
             text-white z-50 ${
               showSidebar ? "flex  flex-col w-16 h-full" : "hidden lg:block"
             }`}
       >
-        <div className="mt-4 flex flex-col h-full ">
-          <div className="text-4xl text-black mb-4 border-b-[1px] flex justify-center pt-2 pb-5">
-            <MdOutlineVideoChat />
+        <div className=" flex flex-col h-full ">
+          <div className="text-4xl text-black mb-4 border-b-[1px] flex justify-center  pb-5">
+            <img src="/logo-icon.png"/>
           </div>
           <div className="flex flex-col justify-between w-full pt-4 h-full gap-3">
             <TooltipProvider>

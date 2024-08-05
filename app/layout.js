@@ -142,6 +142,10 @@ export default function RootLayout({ children }) {
       <head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
+        <link rel="icon" href="/logo-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo-icon.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo-icon.png" />
       </head>
       <body className={inter.className}>
         {showAnswerVideoCall && user2idDoc === id1 && calltokendoc && (

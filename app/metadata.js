@@ -1,5 +1,5 @@
 import "./globals.css";
 export const metadata = {
-  title: "Medi2Connect",
+  title: "VaidyaPadma",
   description: "Created by Yatish Gautam",
 };
