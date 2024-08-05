@@ -137,7 +137,7 @@ function Header({ notificationCount }) {
               </div>
             </Link> */}
 
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
             <Link href={`/my-appointments/${user.uid}`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
