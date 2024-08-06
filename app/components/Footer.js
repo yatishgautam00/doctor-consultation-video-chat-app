@@ -13,7 +13,7 @@ function Footer() {
     />
 
     <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
-    Effortlessly schedule your appointments and manage your health
+    VidyaPadma Effortlessly schedule your appointments and manage your health
               with ease.
     </p>
 

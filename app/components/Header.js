@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { FaHome } from "react-icons/fa";  
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
@@ -83,13 +84,13 @@ function Header({ notificationCount }) {
     },
     {
       id: 2,
-      name: "Explore",
+      name: "Search",
       path: "/search/Neurologist",
     },
     {
       id: 3,
-      name: "Contact Us",
-      path: "/details/hOpY2RHTHDV3Rpo7YXHNy7wqnVv2",
+      name: "Book Appointment",
+      path: "/details/VFC9RXVkkBc1WqhIXoRop3CBs022",
     },
   ];
 
@@ -138,6 +139,17 @@ function Header({ notificationCount }) {
             </Link> */}
 
             {/* <DropdownMenuSeparator /> */}
+            <Link href={`/`}>
+              <div className="flex hover:text-primary lg:hidden md:hidden ">
+                <div className="text-3xl pr-3 ">
+                <FaHome />
+                </div>
+                Home
+              </div>
+            </Link>
+          
+            <DropdownMenuSeparator className="lg:hidden md:hidden flex  flex-col"/>
+      
             <Link href={`/my-appointments/${user.uid}`}>
               <div className="flex hover:text-primary">
                 <div className="text-3xl pr-3 ">
@@ -146,6 +158,7 @@ function Header({ notificationCount }) {
                 My Appointments
               </div>
             </Link>
+            
             <DropdownMenuSeparator />
             <Link href={`/details/VFC9RXVkkBc1WqhIXoRop3CBs022`}>
               <div className="flex hover:text-primary">

@@ -162,21 +162,7 @@ export default function RootLayout({ children }) {
         />
         <meta name="google-site-verification" content="your_verification_code_here" />
 
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": "MedicalOrganization",
-            name: "VaidyaPadma",
-            url: "https://vaidyapadma.vercel.app",
-            description:
-              "Connect with top-rated doctors in India for online and offline consultations.",
-            contactPoint: {
-              "@type": "ContactPoint",
-              telephone: "+91-1234567890",
-              contactType: "Customer Service",
-            },
-          })}
-        </script>
+       
       </head>
       <body className={inter.className}>
         {showAnswerVideoCall && user2idDoc === id1 && calltokendoc && (

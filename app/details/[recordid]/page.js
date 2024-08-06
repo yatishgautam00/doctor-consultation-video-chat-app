@@ -59,7 +59,7 @@ function Details({ params }) {
   return (
     <div className="p-5 md:px-20">
       <h2 className="font-bold text-[22px]">Details</h2>
-      <div className="grid grid-cols-1 md:grid-cols-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5">
         {/* Doctor Details */}
         <div className="col-span-3">
           {doctorList && currentUser && (
@@ -67,7 +67,7 @@ function Details({ params }) {
           )}
         </div>
         {/* Doctor Suggestion */}
-        <div>
+        <div className="col-span-2">
           <DoctorSuggestionList doctorList={doctorList} />
         </div>
       </div>
