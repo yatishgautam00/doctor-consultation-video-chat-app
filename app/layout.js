@@ -160,6 +160,8 @@ export default function RootLayout({ children }) {
           offline appointments, healthcare consultations, medical advice, vaidya, padma, vaidya padma,
            Vaidya Padma, Vaidya padma"
         />
+        <meta name="google-site-verification" content="your_verification_code_here" />
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "http://schema.org",
