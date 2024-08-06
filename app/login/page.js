@@ -71,7 +71,7 @@ function page() {
       {/*form*/}
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-2xl shadow-lg p-10">
     
-        <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Login to</span> <span className='font-bold text-2xl'>VaidyaPadma</span></h1>
+        <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Login to</span> <h1 className='font-bold text-2xl'>VaidyaPadma</h1></h1>
 
       
          {/*email*/}

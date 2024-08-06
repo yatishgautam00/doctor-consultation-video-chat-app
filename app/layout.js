@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,7 +9,14 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firestore } from "@/lib/firebase";
-import { doc, getDoc, query, collection, where, onSnapshot } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  query,
+  collection,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import AnswerVideoCall from "./components/AnswerVideoCall";
 import { Suspense } from "react";
 import Loading from "./loading";
@@ -44,30 +51,31 @@ export default function RootLayout({ children }) {
         //   />
         // ), { duration: 5000 });
         // Set up notification listener
-        const notificationsRef = doc(firestore, "notifications", currentUser.uid);
+        const notificationsRef = doc(
+          firestore,
+          "notifications",
+          currentUser.uid
+        );
         const unsubscribeNotifications = onSnapshot(
           notificationsRef,
           (snapshot) => {
             const data = snapshot.data();
             if (data) {
               const notificationsMap = data.notificationName || {};
-            const notificationArray = Object.entries(notificationsMap).map(
-              ([key, value]) => ({
-                ...value,
-                id: key,
-              })
-            );
+              const notificationArray = Object.entries(notificationsMap).map(
+                ([key, value]) => ({
+                  ...value,
+                  id: key,
+                })
+              );
 
               setNotificationCount(notificationArray.length);
 
               // Show a toast for each new notification
               // notificationArray.forEach(notification => {
-                toast.custom((t) => (
-                  <CustomToast
-                    myId={currentUser.uid}
-                  
-                  />
-                ), { duration: 5000 });
+              toast.custom((t) => <CustomToast myId={currentUser.uid} />, {
+                duration: 5000,
+              });
               // });
             }
           },
@@ -146,6 +154,27 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" sizes="180x180" href="/logo-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/logo-icon.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/logo-icon.png" />
+        <meta
+          name="keywords"
+          content="VaidyaPadma, best doctors in India, online appointments, 
+          offline appointments, healthcare consultations, medical advice, vaidya, padma, vaidya padma,
+           Vaidya Padma, Vaidya padma"
+        />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "MedicalOrganization",
+            name: "VaidyaPadma",
+            url: "https://vaidyapadma.vercel.app",
+            description:
+              "Connect with top-rated doctors in India for online and offline consultations.",
+            contactPoint: {
+              "@type": "ContactPoint",
+              telephone: "+91-1234567890",
+              contactType: "Customer Service",
+            },
+          })}
+        </script>
       </head>
       <body className={inter.className}>
         {showAnswerVideoCall && user2idDoc === id1 && calltokendoc && (
@@ -156,7 +185,9 @@ export default function RootLayout({ children }) {
           />
         )}
         <Toaster position="top-center" />
-        {!isDmPath && !isConsultation && !isChannel && <Header  notificationCount={notificationCount} />}
+        {!isDmPath && !isConsultation && !isChannel && (
+          <Header notificationCount={notificationCount} />
+        )}
         <Suspense fallback={<Loading />}>{children}</Suspense>
         {!isDmPath && !isConsultation && !isChannel && <Footer />}
       </body>

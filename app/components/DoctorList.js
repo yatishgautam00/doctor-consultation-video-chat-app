@@ -48,7 +48,7 @@ console.log(doctorList)
               >
                 <Image
                   src={doctor.doctorImg}
-                  alt="doctor"
+                  alt="vaidyapadma doctor img"
                   width={500}
                   height={250}
                   className="h-[200px] w-full object-cover rounded-lg"
@@ -76,7 +76,7 @@ console.log(doctorList)
               >
                 <Image
                   src={doctor.doctorImg}
-                  alt="doctor"
+                  alt="Vaidyapadma doctor"
                   width={500}
                   height={250}
                   className="h-[200px] w-full object-cover rounded-lg"

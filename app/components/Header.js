@@ -96,7 +96,7 @@ function Header({ notificationCount }) {
   return (
     <div className="flex items-center justify-between p-4 md:px-20 shadow-sm">
       <div className="flex items-center gap-10">
-        <Image src="/logo.png" alt="logo" width={190} height={80} />
+        <Image src="/logo.png" alt="Vaidyapadma" width={190} height={80} />
         <ul className="md:flex gap-8 hidden">
           {Menu.map((item, index) => (
             <Link href={item.path} key={index}>
@@ -114,7 +114,7 @@ function Header({ notificationCount }) {
           <PopoverTrigger className="  relative inline-block">
             <img
               src={userImage || "/user.png"} // Fallback to a default image if user image is not available
-              alt="User"
+              alt="Vaidyapadma User"
               width={50}
               height={50}
               className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
