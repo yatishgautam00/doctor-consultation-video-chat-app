@@ -3,6 +3,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "@/lib/firebase";
 import { LuDot } from "react-icons/lu";
 import moment from "moment";
+import Link from "next/link";
 
 function CustomToast({ myId }) {
   const [notifications, setNotifications] = useState([]);
@@ -76,6 +77,7 @@ function CustomToast({ myId }) {
   const iconMessage = "💬";
 
   return (
+    <Link href={`/consultation`}>
     <div className="flex flex-col space-y-2  ">
       {notifications.length > 0 &&
         notifications.map((notification, index) =>
@@ -121,6 +123,7 @@ function CustomToast({ myId }) {
           ) : null
         )}
     </div>
+    </Link>
   );
 }
 

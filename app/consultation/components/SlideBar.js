@@ -74,7 +74,7 @@ function SlideBar({ showSidebar, handleSidebarToggle }) {
               showSidebar ? "flex  flex-col w-16 h-full" : "hidden lg:block"
             }`}
       >
-        <div className=" flex flex-col h-full ">
+        <div className=" flex flex-col h-full rounded-- ">
           <div className="text-4xl text-black mb-4 border-b-[1px] flex justify-center  pb-5">
             <img src="/logo-icon.png"/>
           </div>
