@@ -3,7 +3,14 @@ import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { firestore } from "@/lib/firebase";
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { FaUserGraduate, FaMapMarkerAlt } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
@@ -14,6 +21,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoMdClose, IoMdListBox } from "react-icons/io";
 import toast from "react-hot-toast";
+import { MdOutlineStar, MdVisibility } from "react-icons/md";
 import {
   Popover,
   PopoverContent,
@@ -37,6 +45,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { FaStar } from "react-icons/fa";
+import { MdOutlineStarBorder } from "react-icons/md";
+import RatingList from "./RatingList";
 
 function DoctorDetail({ doctorList, currentUser }) {
   const [date, setDate] = useState(null);
@@ -45,6 +56,9 @@ function DoctorDetail({ doctorList, currentUser }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [mode, setMode] = useState("");
+  const [rating, setRating] = useState(0);
+  const [ratingMsg, setRatingMsg] = useState("");
+  const [ratings, setRatings] = useState([]);
   const timeSlots = [
     "10:00 AM",
     "10:30 AM",
@@ -66,12 +80,20 @@ function DoctorDetail({ doctorList, currentUser }) {
     "06:30 PM",
     "07:00 PM",
   ];
+  const [averageRating, setAverageRating] = useState(0);
+  const [currentUserHasRated, setCurrentUserHasRated] = useState(false);
+  const [currentUserMsg, setCurrentUserMsg] = useState("");
+  const [currentUserRating, setCurrentUserRating] = useState(0);
 
   const params1 = usePathname();
   const doctorId = params1.split("/")[2];
   const selectedDoctor = doctorList.find(
     (doctor) => doctor.id === doctorId && doctor.role === "doctor"
   );
+
+  const handleRating = (rate) => {
+    setRating(rate);
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -117,6 +139,72 @@ function DoctorDetail({ doctorList, currentUser }) {
 
     fetchAppointments();
   }, [date, selectedDoctor]);
+
+  useEffect(() => {
+    if (selectedDoctor) {
+      const ratingsRef = collection(firestore, "ratings");
+      const q = query(
+        ratingsRef,
+        where("doctorEmail", "==", selectedDoctor.email)
+      );
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const ratingsList = [];
+        let totalRating = 0;
+        let userHasRated = false;
+        let userMsg = "";
+        let userRating = 0;
+
+        querySnapshot.forEach((doc) => {
+          const ratingData = doc.data();
+          ratingsList.push(ratingData);
+
+          totalRating += ratingData.userRating;
+
+          if (ratingData.userEmail === currentUser.email) {
+            userHasRated = true;
+            userMsg = ratingData.userMsg;
+            userRating = ratingData.userRating;
+          }
+        });
+
+        const average =
+          ratingsList.length > 0 ? totalRating / ratingsList.length : 0;
+
+        setRatings(ratingsList);
+        setAverageRating(average);
+        setCurrentUserHasRated(userHasRated);
+        setCurrentUserMsg(userMsg);
+        setCurrentUserRating(userRating);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [selectedDoctor, currentUser.email]);
+
+  const handleRateDoctor = async () => {
+    if (!rating || !ratingMsg) {
+      toast.error("All fields are required");
+      return;
+    }
+    try {
+      await addDoc(collection(firestore, "ratings"), {
+        userEmail: currentUser.email,
+        userName: currentUser.name,
+        userImg: currentUser.avatarUrl,
+        userMsg: ratingMsg,
+        userRating: rating,
+        doctorName: selectedDoctor.name,
+        doctorEmail: selectedDoctor.email,
+        doctorImg: selectedDoctor.doctorImg,
+        visibility: true,
+      });
+
+      toast.success("Added successfully");
+    } catch (error) {
+      toast.error("Failed to create rating");
+    }
+  };
 
   const handleMakeAppointment = async () => {
     if (!date || !selectedTime || !moreInfo || !mode) {
@@ -166,6 +254,9 @@ function DoctorDetail({ doctorList, currentUser }) {
   const handleMoreInfoChange = (e) => {
     setMoreInfo(e.target.value);
   };
+  const handleRatingMsg = (e) => {
+    setRatingMsg(e.target.value);
+  };
 
   if (!selectedDoctor) return null;
 
@@ -176,11 +267,10 @@ function DoctorDetail({ doctorList, currentUser }) {
     { id: 4, icon: "/twitter.png" },
   ];
 
-  // Disable past dates
   const today = new Date();
 
   const handleSelectChange = (value) => {
-    setMode(value); // Update state with the selected value
+    setMode(value);
   };
 
   return (
@@ -197,6 +287,13 @@ function DoctorDetail({ doctorList, currentUser }) {
         </div>
         <div className="col-span-2 mt-5 md:px-10 flex flex-col gap-3 items-baseline">
           <h2 className="font-bold text-xl">{selectedDoctor.name}</h2>
+
+          <h2 className="flex gap-2 items-center text-gray-5 text-md">
+            <MdOutlineStar className="text-xl" />
+            <span className="flex flex-row items-center gap-1 font-medium">
+              {averageRating.toFixed(1)} ({ratings.length + 148} votes){" "}
+            </span>
+          </h2>
           <h2 className="flex gap-2 text-gray-5 text-md">
             <FaUserGraduate className="text-xl" />
             <span>{selectedDoctor.exp} Years of Experience</span>
@@ -209,7 +306,7 @@ function DoctorDetail({ doctorList, currentUser }) {
             {selectedDoctor.category}
           </h2>
           <Button
-            className="mt-2 rounded-xl shadow-md shadow-slate-600 hover:bg-blue-900 hover:shadow-md hover:shadow-blue-800"
+            className="mt-2 rounded-xl shadow-md bg-blue-600 shadow-slate-600 hover:bg-blue-900 hover:shadow-md hover:shadow-blue-800"
             onClick={() => setDialogOpen(true)}
             disabled={currentUser.role === "doctor"}
           >
@@ -298,7 +395,11 @@ function DoctorDetail({ doctorList, currentUser }) {
                           {time}
                         </Button>
                       ))}
-                      {availableTimes.length ===0&& <p className="text-sm text-red-500 font-medium">No slot available on this day</p>}
+                      {availableTimes.length === 0 && (
+                        <p className="text-sm text-red-500 font-medium">
+                          No slot available on this day
+                        </p>
+                      )}
                     </div>
                     <Label htmlFor="mode">Mode</Label>
                     <Select value={mode} onValueChange={setMode}>
@@ -335,14 +436,74 @@ function DoctorDetail({ doctorList, currentUser }) {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+
+          {currentUserHasRated ? (
+            <div className="flex flex-col mt-2">
+              <h2 className="text-lg font-bold">Your Rating</h2>
+              <div className="flex gap-1 mt-1 mb-1">
+                {Array.from({ length: 5 }, (_, index) => {
+                  return (
+                    <span key={index}>
+                      {index < currentUserRating ? (
+                        <MdOutlineStar className="text-yellow-500 w-5 h-5" />
+                      ) : (
+                        <MdOutlineStarBorder className="text-yellow-500 w-5 h-5" />
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+              <div className="flex w-full flex-1  select-none cursor-not-allowed border-2 border-blue-100 px-3 py-2 bg-blue-50">
+                <p className="">{currentUserMsg}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col mt-2 w-full">
+              <h2 className="text-lg font-semibold flex flex-row items-center">
+                <span>Rate your experience?</span>
+              </h2>
+              <div className="flex gap-1 mt-1">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleRating(index + 1)}
+                    className="focus:outline-none"
+                  >
+                    {index < rating ? (
+                      <MdOutlineStar className="text-yellow-500 w-5 h-5" />
+                    ) : (
+                      <MdOutlineStarBorder className="text-yellow-500 w-5 h-5" />
+                    )}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-col mt-2 w-full">
+                <textarea
+                  id="ratingMsg"
+                  placeholder="Describe your experience"
+                  value={ratingMsg}
+                  onChange={handleRatingMsg}
+                  className="mt-2 w-full p-2 border rounded"
+                />
+                <Button
+                  onClick={handleRateDoctor}
+                  className="bg-green-600 w-min hover:bg-green-800 rounded-lg mt-2"
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          )}
           <div>
-              <h2 className="font-bold pt-2 text-[20px]">About Me</h2>
-              <p className="text-gray-500 tracking-wide mt-2 text-justify">
-                {selectedDoctor.about}
-              </p>
-            </div>  
+            <h2 className="font-bold pt-2 text-[20px]">About Me</h2>
+            <p className="text-gray-500 tracking-wide mt-2 text-justify">
+              {selectedDoctor.about}
+            </p>
+          </div>
         </div>
       </div>
+      <RatingList ratings={ratings} currentUser={currentUser}/>
     </>
   );
 }
