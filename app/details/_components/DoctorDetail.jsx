@@ -206,13 +206,15 @@ function DoctorDetail({ doctorList, currentUser }) {
     }
   };
 
+
   const handleMakeAppointment = async () => {
     if (!date || !selectedTime || !moreInfo || !mode) {
       toast.error("All fields are required");
       return;
     }
-
+  
     try {
+      // Create appointment
       await addDoc(collection(firestore, "appointments"), {
         doctorName: selectedDoctor.name,
         doctorEmail: selectedDoctor.email,
@@ -229,18 +231,57 @@ function DoctorDetail({ doctorList, currentUser }) {
         date: date.toDateString(),
         message: moreInfo,
       });
-
+  
       toast.success("Appointment Created Successfully");
-
+  
+      // Reset form fields
       setDialogOpen(false);
       setDate(null);
       setSelectedTime(null);
       setMoreInfo("");
       setMode("");
     } catch (error) {
+      console.error("Appointment creation error:", error);
       toast.error("Failed to create appointment");
     }
+
+     // Send SMS to doctor
+     try {
+      const smsResponse = await fetch('/api/sendSms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          doctorPhone: selectedDoctor.phone,
+          message: `From VaidyaPadma:- A New appointment booked by ${currentUser.name} on ${date.toDateString()} at ${selectedTime}`,
+        }),
+      });
+
+      if (!smsResponse.ok) {
+        console.error(`SMS sending failed: ${smsResponse.status} ${smsResponse.statusText}`);
+        toast.error("Failed to send SMS to doctor");
+        return;
+      }
+
+      const smsResult = await smsResponse.json();
+      if (smsResult.success) {
+        toast.success("SMS sent to doctor successfully");
+      } else {
+        console.error("SMS sending failed response:", smsResult);
+        toast.error("Failed to send SMS to doctor");
+      }
+    } catch (smsError) {
+      console.error("SMS sending error:", smsError);
+      toast.error("Failed to send SMS to doctor");
+    }
+
   };
+  
+  
+
+  
+  
 
   const handleCloseAppointment = () => {
     setSelectedTime(null);

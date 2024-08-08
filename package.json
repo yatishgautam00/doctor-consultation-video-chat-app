@@ -45,7 +45,8 @@
     "react-icons": "^5.2.1",
     "react-resizable-panels": "^2.0.22",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "twilio": "^5.2.2"
   },
   "devDependencies": {
     "postcss": "^8",
