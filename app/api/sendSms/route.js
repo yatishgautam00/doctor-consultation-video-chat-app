@@ -15,7 +15,7 @@ export async function POST(request) {
       body: message,
       from: twilioPhoneNumber,
       to: `+91${doctorPhone}`,
-    });
+    }) ; 
 
     console.log(`SMS sent: ${response.sid}`);
 
