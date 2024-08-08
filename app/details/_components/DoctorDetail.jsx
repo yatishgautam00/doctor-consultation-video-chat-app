@@ -291,7 +291,7 @@ function DoctorDetail({ doctorList, currentUser }) {
           <h2 className="flex gap-2 items-center text-gray-5 text-md">
             <MdOutlineStar className="text-xl" />
             <span className="flex flex-row items-center gap-1 font-medium">
-              {averageRating.toFixed(1)} ({ratings.length + 148} votes){" "}
+              {averageRating.toFixed(1)} ({ratings.length + 150} votes){" "}
             </span>
           </h2>
           <h2 className="flex gap-2 text-gray-5 text-md">
@@ -437,7 +437,7 @@ function DoctorDetail({ doctorList, currentUser }) {
             </AlertDialogContent>
           </AlertDialog>
 
-          {currentUserHasRated ? (
+          {currentUserHasRated && currentUser.role ==='patient'  ? (
             <div className="flex flex-col mt-2">
               <h2 className="text-lg font-bold">Your Rating</h2>
               <div className="flex gap-1 mt-1 mb-1">
@@ -457,7 +457,7 @@ function DoctorDetail({ doctorList, currentUser }) {
                 <p className="">{currentUserMsg}</p>
               </div>
             </div>
-          ) : (
+          ) : ( currentUser.role !== 'doctor' &&
             <div className="flex flex-col mt-2 w-full">
               <h2 className="text-lg font-semibold flex flex-row items-center">
                 <span>Rate your experience?</span>
