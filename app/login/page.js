@@ -76,7 +76,7 @@ function page() {
       >
         <h1 className="font-secondary text-xl text-center font-semibold text-primary">
           <span className="text-black font-normal text-md">Login to</span>{" "}
-          <h1 className="font-bold text-2xl">VaidyaPadma</h1>
+          <span className="font-bold text-2xl">VaidyaPadma</span>
         </h1>
 
         {/*email*/}
