@@ -558,7 +558,7 @@ function DoctorDetail({ doctorList, currentUser }) {
           (rating, index) =>
             index < 1 &&
             !showRatings && (
-              <div className="border-2 mb-0 border-slate-300 px-4 py-3 rounded-t-lg">
+              <div className="border-2  mb-0 border-slate-300 px-4 py-3 rounded-t-lg">
                 <div className="flex items-center  justify-start space-x-2 ">
                   <img
                     src={rating.userImg}
@@ -568,7 +568,7 @@ function DoctorDetail({ doctorList, currentUser }) {
                     className="rounded-full"
                   />
                   <div className="flex-1 ">
-                    <h3 className="text-md flex w-full justify-start font-bold">
+                    <h3 className="text-md flex overflow-x-hidden w-full justify-start font-bold">
                       {rating.userName}
                     </h3>
                     <div className="flex">
@@ -580,8 +580,8 @@ function DoctorDetail({ doctorList, currentUser }) {
                 </div>
                 {rating.userMsg && (
                   <div className="p-1 border- flex justify-start rounded h-max border-gray-300">
-                    <p className="whitespace-pre-lin truncate">
-                      {rating.userMsg}..{" "}
+                    <p className="whitespace-pre-line truncate text-justify">
+                      {rating.userMsg}
                     </p>
                   </div>
                 )}
