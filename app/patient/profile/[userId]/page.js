@@ -126,7 +126,7 @@ function PatientProfile() {
               )}
             </div>
 
-            <div className="flex-grow flex-col flex gap-4">
+            <div className=" flex-grow flex-col flex gap-4">
               {/* Email */}
               <div className="grid grid-cols-3 items-center ">
                 <label className="label">
