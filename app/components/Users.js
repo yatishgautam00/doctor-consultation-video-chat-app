@@ -148,13 +148,13 @@ function Users({ userData, setSelectedChatroom }) {
 
           // Update the document to delete the notification
           await updateDoc(notificationRef, updateObj);
-          console.log(
-            `Notification ${
-              chatroom.usersData[
-                chatroom.users.find((id) => id !== userData.id)
-              ]
-            } deleted`
-          );
+          // console.log(
+          //   `Notification ${
+          //     chatroom.usersData[
+          //       chatroom.users.find((id) => id !== userData.id)
+          //     ]
+          //   } deleted`
+          // );
 
           // Update the local state to remove the deleted notification
           

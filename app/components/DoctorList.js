@@ -34,7 +34,7 @@ function DoctorList({ heading = 'Popular Doctor', }) {
     };
     fetchCategories();
   }, []);
-console.log(doctorList)
+// console.log(doctorList)
   const renderDoctors = () => {
     return doctorList.length > 0
       ? doctorList.map((doctor, index) => {
@@ -99,7 +99,7 @@ console.log(doctorList)
           }
         })
       : 
-      [1, 2, 3, ].map((item, index) => (
+      [1, ].map((item, index) => (
           <div
             className="grid grid-cols-2 sm:grid-cols-2 gap-10 align-baseline justify-content-center md:grid-cols-3 lg:grid-cols-3 mt-5 items-center"
             key={index}

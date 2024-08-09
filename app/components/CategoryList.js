@@ -24,7 +24,7 @@ function CategoryList() {
   return (
     <div>
       <h1>Categories</h1>
-      <ul>
+      <ul> 
         {categories.map((category, index) => (
           <li key={index} className='flex flex-row gap-1'>
             <img src={category.url} alt={category.category} width="100" />

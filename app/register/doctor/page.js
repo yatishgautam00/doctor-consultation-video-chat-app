@@ -8,8 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CldUploadWidget } from "next-cloudinary";
 import { FaUserDoctor } from "react-icons/fa6";
-import { collection, getDocs } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 import {
   AlertDialog,
@@ -28,11 +28,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 
 function page() {
   const [name, setName] = useState("");
@@ -51,14 +50,13 @@ function page() {
   const [moreinfo, setMoreinfo] = useState("");
   const [categories, setCategories] = useState([]);
 
-
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // If the user is not authenticated, redirect to the login page
-        router.replace('/');
+        router.replace("/");
       }
     });
     return () => unsubscribe();
@@ -67,15 +65,17 @@ function page() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, 'categorylist'));
-        const categoriesList = querySnapshot.docs.map(doc => doc.data());
+        const querySnapshot = await getDocs(
+          collection(firestore, "categorylist")
+        );
+        const categoriesList = querySnapshot.docs.map((doc) => doc.data());
         setCategories(categoriesList);
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
     };
     fetchCategories();
-}, []);
+  }, []);
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,8 +83,8 @@ function page() {
     if (!doctorImg.trim()) {
       newErrors.doctorImg = "Image is required";
     }
-  
-  console.log(category)
+
+    console.log(category);
     if (!(phone.length === 10) || isNaN(Number(phone))) {
       newErrors.phone = "Number is required";
     }
@@ -147,9 +147,9 @@ function page() {
           numpatients,
           category,
         });
-        const notificationDocRef = doc(firestore, 'notifications', user.uid);
+        const notificationDocRef = doc(firestore, "notifications", user.uid);
         await setDoc(notificationDocRef, {});
-    
+
         router.push("/");
         setErrors({});
       }
@@ -174,8 +174,12 @@ function page() {
         onSubmit={handleSubmit}
         className="space-y-4 w-full max-w-2xl shadow-lg p-10"
       >
-              <h1 className='font-secondary text-xl text-center font-semibold text-primary'><span className='text-black font-normal text-md'>Sign-Up as Doctor to</span> <span className='font-bold text-2xl'>VaidyaPadma</span></h1>
-
+        <h1 className="font-secondary text-xl text-center font-semibold text-primary">
+          <span className="text-black font-normal text-md">
+            Sign-Up as Doctor to
+          </span>{" "}
+          <span className="font-bold text-2xl">VaidyaPadma</span>
+        </h1>
 
         {/* Display the avatar and refresh button */}
         <div className="flex items-center space-y-2 justify-between border border-gray-200 p-2">
@@ -227,7 +231,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Name</span>
           </label>
-          <Input 
+          <Input
             type="text"
             placeholder="Name"
             className="w-full input input-bordered"
@@ -242,7 +246,7 @@ function page() {
           <label className="label">
             <span className="text-base label-text">Email</span>
           </label>
-          <Input 
+          <Input
             type="text"
             placeholder="Email"
             className="w-full input input-bordered"
@@ -254,175 +258,203 @@ function page() {
 
         {/*password*/}
         <div className="flex lg:flex-row w-full justify-between flex-col gap-3 md:flex-row lg:gap-5">
-        <div className="w-full">
-          <label className="label">
-            <span className="text-base label-text">Password</span>
-          </label>
-          <Input 
-            type="password"
-            placeholder="Enter Password"
-            className="w-full input input-bordered"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errors.password && (
-            <span className="text-red-500">{errors.password}</span>
-          )}
+          <div className="w-full">
+            <label className="label">
+              <span className="text-base label-text">Password</span>
+            </label>
+            <Input
+              type="password"
+              placeholder="Enter Password"
+              className="w-full input input-bordered"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && (
+              <span className="text-red-500">{errors.password}</span>
+            )}
+          </div>
+
+          {/*confirm password*/}
+          <div className="w-full">
+            <label className="label">
+              <span className="text-base label-text">Confirm Password</span>
+            </label>
+            <Input
+              type="password"
+              placeholder="Confirm Password"
+              className="w-full input input-bordered"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            {errors.confirmPassword && (
+              <span className="text-red-500">{errors.confirmPassword}</span>
+            )}
+          </div>
         </div>
 
-        {/*confirm password*/}
-        <div className="w-full">
-          <label className="label">
-            <span className="text-base label-text">Confirm Password</span>
-          </label>
-          <Input 
-            type="password"
-            placeholder="Confirm Password"
-            className="w-full input input-bordered"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+        <div>
+          <AlertDialog>
+            <AlertDialogTrigger value={about}>
+              {" "}
+              <div className="flex flex-col">
+                <span className="bg-sky-800 px-3 py-1 text-white text-md rounded-lg">
+                  Add more details
+                </span>
+                {errors.about && (
+                  <span className="text-red-500">{errors.about}</span>
+                )}
+              </div>
+            </AlertDialogTrigger>
 
-          />
-          {errors.confirmPassword && (
-            <span className="text-red-500">{errors.confirmPassword}</span>
-          )}
-        </div>
-        </div>
-        
-        <div>
-        <AlertDialog>
-          <AlertDialogTrigger value={about}  > <div className='flex flex-col'><span className='bg-sky-800 px-3 py-1 text-white text-md rounded-lg'>Add more details</span>
-          {errors.about && <span className="text-red-500">{errors.about}</span>}</div>
-          </AlertDialogTrigger>
-         
-
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle >Details.</AlertDialogTitle>
-              <AlertDialogDescription className='flex flex-col gap-5'>
-                {/*phone*/}
-        <div className='flex flex-row gap-4'>
-        <div>
-          <label className="label">
-            <span className="text-base text-slate-950  label-text">Phone</span>
-          </label>
-          <Input 
-            type="text"
-            placeholder="Phone number"
-            className="w-full input  "
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          {errors.phone && <span className="text-red-500">{errors.phone}</span>}
-        </div>
-        {/* experience */}
-        <div>
-          <label className="label">
-            <span className="text-base text-slate-950 label-text">Years of Experience</span>
-          </label>
-          <Input 
-            type="number"
-            placeholder="Experience"
-            className="w-full input"
-            value={exp}
-            onChange={(e) => setExp(e.target.value)}
-          />
-          {errors.exp && <span className="text-red-500">{errors.exp}</span>}
-        </div>
-        </div>
-        {/* specialization */}
-        <div className='flex flex-row gap-4'>
-        <div>
-          <label className="label">
-            <span className="text-base text-slate-950 label-text">Specialization</span>
-          </label>
-          {/* <Input 
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Details.</AlertDialogTitle>
+                <AlertDialogDescription className="flex flex-col gap-5">
+                  {/*phone*/}
+                  <div className="flex flex-row gap-4">
+                    <div>
+                      <label className="label">
+                        <span className="text-base text-slate-950  label-text">
+                          Phone
+                        </span>
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Phone number"
+                        className="w-full input  "
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                      {errors.phone && (
+                        <span className="text-red-500">{errors.phone}</span>
+                      )}
+                    </div>
+                    {/* experience */}
+                    <div>
+                      <label className="label">
+                        <span className="text-base text-slate-950 label-text">
+                          Years of Experience
+                        </span>
+                      </label>
+                      <Input
+                        type="number"
+                        placeholder="Experience"
+                        className="w-full input"
+                        value={exp}
+                        onChange={(e) => setExp(e.target.value)}
+                      />
+                      {errors.exp && (
+                        <span className="text-red-500">{errors.exp}</span>
+                      )}
+                    </div>
+                  </div>
+                  {/* specialization */}
+                  <div className="flex flex-row gap-4">
+                    <div>
+                      <label className="label">
+                        <span className="text-base text-slate-950 label-text">
+                          Specialization
+                        </span>
+                      </label>
+                      {/* <Input 
             type="text"
             placeholder="category"
             className="w-full input"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           /> */}
-          <Select value={category} onValueChange={setCategory}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="category" />
-        </SelectTrigger>
-        <SelectContent className='pb-10'>{categories.map((category, index) => (
-             <SelectItem value={category.category} key={index}>
-             {category.category}
-             </SelectItem>
-        ))}
-         
-      
-        </SelectContent>
-      </Select>
+                      <Select value={category} onValueChange={setCategory}>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="category" />
+                        </SelectTrigger>
+                        <SelectContent className="pb-10">
+                          {categories.map((category, index) => (
+                            <SelectItem value={category.category} key={index}>
+                              {category.category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
 
+                      {errors.category && (
+                        <span className="text-red-500">{errors.category}</span>
+                      )}
+                    </div>
+                    {/* number of patients */}
+                    <div>
+                      <label className="label">
+                        <span className="text-base text-slate-950 label-text">
+                          Number of Patients
+                        </span>
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Total Patients"
+                        className="w-full input"
+                        value={numpatients}
+                        onChange={(e) => setNumpatients(e.target.value)}
+                      />
+                      {errors.numpatients && (
+                        <span className="text-red-500">
+                          {errors.numpatients}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {/*address*/}
+                  <div>
+                    <label className="label">
+                      <span className="text-base text-slate-950 label-text">
+                        Address
+                      </span>
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Current Address"
+                      className="w-full input"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                    {errors.address && (
+                      <span className="text-red-500">{errors.address}</span>
+                    )}
+                  </div>
+                  {/*about*/}
+                  <div>
+                    <label className="label">
+                      <span className="text-base text-slate-950 label-text">
+                        About
+                      </span>
+                    </label>
 
+                    <Textarea
+                      type="text"
+                      placeholder="About"
+                      className="w-full input"
+                      value={about}
+                      onChange={(e) => setAbout(e.target.value)}
+                    />
+                    {errors.about && (
+                      <span className="text-red-500">{errors.about}</span>
+                    )}
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
 
-          {errors.category && <span className="text-red-500">{errors.category}</span>}
-        </div>
-        {/* number of patients */}
         <div>
-          <label className="label">
-            <span className="text-base text-slate-950 label-text">Number of Patients</span>
-          </label>
-          <Input 
-            type="text"
-            placeholder="Total Patients"
-            className="w-full input"
-            value={numpatients}
-            onChange={(e) => setNumpatients(e.target.value)}
-          />
-          {errors.numpatients && <span className="text-red-500">{errors.numpatients}</span>}
-        </div>
-        </div>
-        {/*address*/}
-        <div>
-          <label className="label">
-            <span className="text-base text-slate-950 label-text">Address</span>
-          </label>
-          <Input 
-            type="text"
-            placeholder="Current Address"
-            className="w-full input"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {errors.address && <span className="text-red-500">{errors.address}</span>}
-        </div>
-        {/*about*/}
-        <div>
-          <label className="label">
-            <span className="text-base text-slate-950 label-text">About</span>
-          </label>
-          
-          <Textarea 
-            type="text"
-            placeholder="About"
-            className="w-full input"
-            value={about}
-            onChange={(e) => setAbout(e.target.value)}
-          />
-          {errors.about && <span className="text-red-500">{errors.about}</span>}
-        </div>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>
-              Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-         
-        </div>
-        
-        <div>
-          <Button type='submit' className="btn btn-block  text-white">
-            {
-              loading? <span className="loading loading-spinner loading-sm"></span> : 'Sign Up'
-            }
+          <Button type="submit" className="btn btn-block  text-white">
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </div>
 

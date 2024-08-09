@@ -70,14 +70,14 @@ const toggleShowAll = () => {
 
     <CommandGroup >
         
-    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 m-5">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 m-5">
   
    
       {categoriesToShow.length > 0 ? (
         
         categoriesToShow.map((category, index) => (
             
-            <CommandItem href={"/"+category.category} className='flex text-wrap flex-col  gap- items-center 
+            <CommandItem href={"/"+category.category} key={index} className='flex text-wrap flex-col  gap- items-center 
         bg-blue-50 m-3 rounded-lg  hover:scale-110 transition-all ease-in-out cursor-pointer'>
           <Link
             href={"/search/"+category.category}

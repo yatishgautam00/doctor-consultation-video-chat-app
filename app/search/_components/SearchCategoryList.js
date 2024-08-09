@@ -35,7 +35,7 @@ function CategoryList() {
       };
       fetchCategories();
   }, []);
-console.log(categories)
+// console.log(categories)
   return (
     <div className="h-screen mt-5 flex flex-col">
         

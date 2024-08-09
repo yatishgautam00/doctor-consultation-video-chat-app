@@ -3,7 +3,7 @@ import { MdOutlineStar, MdVisibility } from "react-icons/md";
 
 function RatingList({ratings , currentUser}) {
   return (
-    <div className="col-span-2 mt-5 grid grid-cols-1  sm:grid-cols-2 gap-6">
+    <div className="col-span-2 mt-3 grid grid-cols-1  sm:grid-cols-2 gap-6">
         {ratings.map((rating, index) => rating.userEmail !== currentUser.email && (
           <div
             key={index}

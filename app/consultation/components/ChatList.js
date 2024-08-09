@@ -135,10 +135,10 @@ const ChatList = ({
         chatroom.usersData[chatroom.users.find((id) => id !== userData.id)],
     };
 
-    console.log(userData.id);
-    console.log(
-      chatroom.usersData[chatroom.users.find((id) => id !== userData.id)].id
-    );
+    // console.log(userData.id);
+    // console.log(
+    //   chatroom.usersData[chatroom.users.find((id) => id !== userData.id)].id
+    // );
     setSelectedChatroom(data);
     
     try {
@@ -168,13 +168,13 @@ const ChatList = ({
 
           // Update the document to delete the notification
           await updateDoc(notificationRef, updateObj);
-          console.log(
-            `Notification ${
-              chatroom.usersData[
-                chatroom.users.find((id) => id !== userData.id)
-              ]
-            } deleted`
-          );
+          // console.log(
+          //   `Notification ${
+          //     chatroom.usersData[
+          //       chatroom.users.find((id) => id !== userData.id)
+          //     ]
+          //   } deleted`
+          // );
 
           // Update the local state to remove the deleted notification
           setNotifications((prevNotifications) =>

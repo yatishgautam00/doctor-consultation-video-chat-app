@@ -27,7 +27,7 @@ function CustomToast({ myId }) {
 
         if (notificationDoc.exists()) {
           const data = notificationDoc.data();
-          console.log("This is data:", data);
+          // console.log("This is data:", data);
 
           if (data) {
             // Process the data and ensure it matches the expected structure

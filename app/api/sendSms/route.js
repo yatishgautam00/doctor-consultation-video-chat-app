@@ -17,7 +17,7 @@ export async function POST(request) {
       to: `+91${doctorPhone}`,
     }) ; 
 
-    console.log(`SMS sent: ${response.sid}`);
+    // console.log(`SMS sent: ${response.sid}`);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

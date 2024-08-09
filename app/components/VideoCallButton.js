@@ -86,7 +86,7 @@ export default function VideoCallButton() {
   const handleSelectuser2id = async (userId) => {
     setUser2id(userId);
     setUser2idbool(true);
-    console.log("Selected user ID:", userId); // For debugging
+    // console.log("Selected user ID:", userId); // For debugging
   };
 
   const handleVideoCall = async () => {
@@ -101,7 +101,7 @@ export default function VideoCallButton() {
         });
         setDocId(docRef.id);
 
-        console.log("this is user id" + user1id);
+        // console.log("this is user id" + user1id);
         router.push(`/channel/${docRef.id}`);
       }
     } catch (e) {

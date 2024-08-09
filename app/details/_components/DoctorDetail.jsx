@@ -316,7 +316,7 @@ function DoctorDetail({ doctorList, currentUser }) {
 
   return (
     <>
-      <div className="col-span-3 grid grid-cols-1 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
+      <div className="col-span-3 grid grid-cols-2 md:grid-cols-3 border-[1px] p-5 mt-5 rounded-lg">
         <div>
           <img
             src={selectedDoctor.doctorImg}
@@ -544,6 +544,7 @@ function DoctorDetail({ doctorList, currentUser }) {
           </div>
         </div>
       </div>
+      <div className="text-xl font-bold pl-1 pt-4">User Experiences</div>
       <RatingList ratings={ratings} currentUser={currentUser}/>
     </>
   );
