@@ -49,16 +49,11 @@ function DoctorSuggestionList({ doctorList }) {
                       <div className="mt flex col-span-3 flex-col gap-1">
                         <h2 className="text-sm  font-bold">{doctor.name}</h2>
                         <h2 className="text-[14px] text-gray-5">
-                          <span className="">
-                            {doctor.exp}+ Years
-                          </span>
+                          <span className="">{doctor.exp}+ Years</span>
                         </h2>
-                        <h2 className="text-[14px] text-gray-5">
-                          <span className="w-full truncate">
-                            {doctor.address}
-                          </span>
+                        <h2 className="text-[14px] text-gray-5 overflow-hidden text-ellipsis whitespace-nowrap">
+                          <span>{doctor.address}</span>
                         </h2>
-                        
 
                         <h2
                           className="text-[10px] w-min text-center font-medium bg-blue-100 p-1 rounded-full
