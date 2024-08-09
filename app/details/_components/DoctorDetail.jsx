@@ -20,7 +20,9 @@ import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoMdClose, IoMdListBox } from "react-icons/io";
+import { FaChevronCircleUp } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { MdExpandCircleDown } from "react-icons/md";
 import { MdOutlineStar, MdVisibility } from "react-icons/md";
 import {
   Popover,
@@ -84,7 +86,7 @@ function DoctorDetail({ doctorList, currentUser }) {
   const [currentUserHasRated, setCurrentUserHasRated] = useState(false);
   const [currentUserMsg, setCurrentUserMsg] = useState("");
   const [currentUserRating, setCurrentUserRating] = useState(0);
-
+  const [showRatings, setShowRatings] = useState(false);
   const params1 = usePathname();
   const doctorId = params1.split("/")[2];
   const selectedDoctor = doctorList.find(
@@ -206,13 +208,12 @@ function DoctorDetail({ doctorList, currentUser }) {
     }
   };
 
-
   const handleMakeAppointment = async () => {
     if (!date || !selectedTime || !moreInfo || !mode) {
       toast.error("All fields are required");
       return;
     }
-  
+
     try {
       // Create appointment
       await addDoc(collection(firestore, "appointments"), {
@@ -231,9 +232,9 @@ function DoctorDetail({ doctorList, currentUser }) {
         date: date.toDateString(),
         message: moreInfo,
       });
-  
+
       toast.success("Appointment Created Successfully");
-  
+
       // Reset form fields
       setDialogOpen(false);
       setDate(null);
@@ -245,21 +246,25 @@ function DoctorDetail({ doctorList, currentUser }) {
       toast.error("Failed to create appointment");
     }
 
-     // Send SMS to doctor
-     try {
-      const smsResponse = await fetch('/api/sendSms', {
-        method: 'POST',
+    // Send SMS to doctor
+    try {
+      const smsResponse = await fetch("/api/sendSms", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           doctorPhone: selectedDoctor.phone,
-          message: `From VaidyaPadma:- A New appointment booked by ${currentUser.name} on ${date.toDateString()} at ${selectedTime}`,
+          message: `From VaidyaPadma:- A New appointment booked by ${
+            currentUser.name
+          } on ${date.toDateString()} at ${selectedTime}`,
         }),
       });
 
       if (!smsResponse.ok) {
-        console.error(`SMS sending failed: ${smsResponse.status} ${smsResponse.statusText}`);
+        console.error(
+          `SMS sending failed: ${smsResponse.status} ${smsResponse.statusText}`
+        );
         toast.error("Failed to send SMS to doctor");
         return;
       }
@@ -275,13 +280,7 @@ function DoctorDetail({ doctorList, currentUser }) {
       console.error("SMS sending error:", smsError);
       toast.error("Failed to send SMS to doctor");
     }
-
   };
-  
-  
-
-  
-  
 
   const handleCloseAppointment = () => {
     setSelectedTime(null);
@@ -312,6 +311,10 @@ function DoctorDetail({ doctorList, currentUser }) {
 
   const handleSelectChange = (value) => {
     setMode(value);
+  };
+
+  const toggleRatings = () => {
+    setShowRatings(!showRatings);
   };
 
   return (
@@ -478,7 +481,7 @@ function DoctorDetail({ doctorList, currentUser }) {
             </AlertDialogContent>
           </AlertDialog>
 
-          {currentUserHasRated && currentUser.role ==='patient'  ? (
+          {currentUserHasRated && currentUser.role === "patient" ? (
             <div className="flex flex-col mt-2">
               <h2 className="text-lg font-bold">Your Rating</h2>
               <div className="flex gap-1 mt-1 mb-1">
@@ -498,43 +501,45 @@ function DoctorDetail({ doctorList, currentUser }) {
                 <p className="">{currentUserMsg}</p>
               </div>
             </div>
-          ) : ( currentUser.role !== 'doctor' &&
-            <div className="flex flex-col mt-2 w-full">
-              <h2 className="text-lg font-semibold flex flex-row items-center">
-                <span>Rate your experience?</span>
-              </h2>
-              <div className="flex gap-1 mt-1">
-                {Array.from({ length: 5 }, (_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => handleRating(index + 1)}
-                    className="focus:outline-none"
-                  >
-                    {index < rating ? (
-                      <MdOutlineStar className="text-yellow-500 w-5 h-5" />
-                    ) : (
-                      <MdOutlineStarBorder className="text-yellow-500 w-5 h-5" />
-                    )}
-                  </button>
-                ))}
-              </div>
+          ) : (
+            currentUser.role !== "doctor" && (
               <div className="flex flex-col mt-2 w-full">
-                <textarea
-                  id="ratingMsg"
-                  placeholder="Describe your experience"
-                  value={ratingMsg}
-                  onChange={handleRatingMsg}
-                  className="mt-2 w-full p-2 border rounded"
-                />
-                <Button
-                  onClick={handleRateDoctor}
-                  className="bg-green-600 w-min hover:bg-green-800 rounded-lg mt-2"
-                >
-                  Submit
-                </Button>
+                <h2 className="text-lg font-semibold flex flex-row items-center">
+                  <span>Rate your experience?</span>
+                </h2>
+                <div className="flex gap-1 mt-1">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => handleRating(index + 1)}
+                      className="focus:outline-none"
+                    >
+                      {index < rating ? (
+                        <MdOutlineStar className="text-yellow-500 w-5 h-5" />
+                      ) : (
+                        <MdOutlineStarBorder className="text-yellow-500 w-5 h-5" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-col mt-2 w-full">
+                  <textarea
+                    id="ratingMsg"
+                    placeholder="Describe your experience"
+                    value={ratingMsg}
+                    onChange={handleRatingMsg}
+                    className="mt-2 w-full p-2 border rounded"
+                  />
+                  <Button
+                    onClick={handleRateDoctor}
+                    className="bg-green-600 w-min hover:bg-green-800 rounded-lg mt-2"
+                  >
+                    Submit
+                  </Button>
+                </div>
               </div>
-            </div>
+            )
           )}
           <div>
             <h2 className="font-bold pt-2 text-[20px]">About Me</h2>
@@ -545,7 +550,70 @@ function DoctorDetail({ doctorList, currentUser }) {
         </div>
       </div>
       <div className="text-xl font-bold pl-1 pt-4">User Experiences</div>
-      <RatingList ratings={ratings} currentUser={currentUser}/>
+      <button
+        className="sm:visible md:visible lg:hidden    py-2 rounded-md"
+        onClick={toggleRatings}
+      >
+        {ratings.map(
+          (rating, index) =>
+            index < 1 &&
+            !showRatings && (
+              <div className="border-2 mb-0 border-slate-300 px-2 py-2 rounded-t-lg">
+                <div className="flex items-center  justify-start space-x-4 ">
+                  <img
+                    src={rating.userImg}
+                    alt="User"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                  <div className="flex-1 ">
+                    <h3 className="text-md flex w-full justify-start font-bold">
+                      {rating.userName}
+                    </h3>
+                    <div className="flex">
+                      {Array.from({ length: rating.userRating }, (_, i) => (
+                        <MdOutlineStar key={i} className="text-yellow-500" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {rating.userMsg && (
+                  <div className="p-1 border- flex justify-start rounded h-max border-gray-300">
+                    <p className="whitespace-pre-lin truncate">
+                      {rating.userMsg}..{" "}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )
+        )}
+        <div
+          className={` bg-slate-300 text-lg font-medium py-1 ${
+            showRatings && "rounded-lg"
+          }`}
+        >
+          {!showRatings && (
+            <div className="flex flex-row items-center justify-center gap-1">
+              <span>Show Ratings</span>
+              <MdExpandCircleDown />
+            </div>
+          )}
+          {showRatings && (
+            <div className="flex flex-row px-14 py-1 items-center justify-center gap-1">
+              <span>Hide Ratings</span>
+              <FaChevronCircleUp />
+            </div>
+          )}
+        </div>
+      </button>
+
+      {/* Conditional Rendering of RatingList */}
+      {showRatings && (
+        <div className="sm:block md:block lg:block">
+          <RatingList ratings={ratings} currentUser={currentUser} />
+        </div>
+      )}
     </>
   );
 }
