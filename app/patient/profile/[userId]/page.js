@@ -170,7 +170,7 @@ function PatientProfile() {
                   {editMode && email && (
                     <Button
                       type="submit"
-                      className="btn hover:scale-105 bg-green-700 hover:bg-green-500 w-full"
+                      className="btn hover:scale-105 bg-green-700 hover:bg-green-700 w-full"
                     >
                       Save
                     </Button>
@@ -182,7 +182,7 @@ function PatientProfile() {
                       role === "doctor" && router.push("/")
                     } ${
                       editMode
-                        ? "border border-red-500 text-red-500 hover:bg-red-50 bg-white"
+                        ? "border border-red-500 text-red-500 hover:bg-white bg-white"
                         : "bg-blue-900 hover:bg-blue-700 w-max "
                     }`}
                   >
