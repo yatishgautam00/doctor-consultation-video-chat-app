@@ -551,15 +551,15 @@ function DoctorDetail({ doctorList, currentUser }) {
       </div>
       <div className="text-xl font-bold pl-1 pt-4">User Experiences</div>
       <button
-        className="sm:visible md:visible lg:hidden    py-2 rounded-md"
+        className="sm:visible md:visible lg:visible    py-2 rounded-md"
         onClick={toggleRatings}
       >
         {ratings.map(
           (rating, index) =>
             index < 1 &&
             !showRatings && (
-              <div className="border-2 mb-0 border-slate-300 px-2 py-2 rounded-t-lg">
-                <div className="flex items-center  justify-start space-x-4 ">
+              <div className="border-2 mb-0 border-slate-300 px-4 py-3 rounded-t-lg">
+                <div className="flex items-center  justify-start space-x-2 ">
                   <img
                     src={rating.userImg}
                     alt="User"
@@ -594,7 +594,7 @@ function DoctorDetail({ doctorList, currentUser }) {
           }`}
         >
           {!showRatings && (
-            <div className="flex flex-row items-center justify-center gap-1">
+            <div className="flex flex-row px-3 py-1  items-center justify-center gap-1">
               <span>Show Ratings</span>
               <MdExpandCircleDown />
             </div>
