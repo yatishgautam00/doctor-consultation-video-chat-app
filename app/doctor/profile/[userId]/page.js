@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { CldUploadWidget } from "next-cloudinary";
 import { FaUserDoctor } from "react-icons/fa6";
-import { LuImagePlus } from "react-icons/lu"; 
+import { LuImagePlus } from "react-icons/lu";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,9 +46,7 @@ function DoctorProfile() {
           setCategory(data.category || "");
           setEmail(data.email || "");
           setRole(data.role);
-          
         }
-        
       }
     };
 
@@ -58,7 +56,7 @@ function DoctorProfile() {
   const handleEditToggle = () => {
     setEditMode(!editMode);
   };
- 
+
   const handleSuccess = (result) => {
     setDoctorImg(result.info.secure_url);
   };
@@ -87,18 +85,17 @@ function DoctorProfile() {
     }
   };
 
-  // Page Protection
+  // Add Auth State Listener for Quick Protection
   useEffect(() => {
-    const checkAuth = async () => {
-      const user = auth.currentUser;
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         router.push("/login"); // Redirect to login if unauthorized
       }
-      
-    };
-    
-    checkAuth();
+    });
+
+    return () => unsubscribe();
   }, [router]);
+
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:p-10 md:py-7 p-3">
@@ -139,7 +136,8 @@ function DoctorProfile() {
                         onClick={() => open()}
                         className="btn btn-outline w-full bg-slate-600 hover:bg-slate-400 flex flex-row items-center justify-center text-xl gap-2"
                       >
-                        <LuImagePlus /> <span className="text-sm pt-1">New Image</span>
+                        <LuImagePlus />{" "}
+                        <span className="text-sm pt-1">New Image</span>
                       </Button>
                     )}
                   </CldUploadWidget>
@@ -318,7 +316,9 @@ function DoctorProfile() {
                   <Button
                     type="button"
                     onClick={handleEditToggle}
-                    className={`w-full hover:scale-105 ease-in-out ${role === 'patient' && router.push('/')} ${
+                    className={`w-full hover:scale-105 ease-in-out ${
+                      role === "patient" && router.push("/")
+                    } ${
                       editMode
                         ? "border border-red-500 text-red-500 hover:bg-red-50 bg-white"
                         : "bg-blue-900 hover:bg-blue-700 w-max "

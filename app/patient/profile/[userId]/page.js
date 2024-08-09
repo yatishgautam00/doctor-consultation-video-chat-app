@@ -23,6 +23,16 @@ function PatientProfile() {
   const router = useRouter();
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.push("/login"); // Redirect to login if unauthorized
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener on unmount
+  }, [router]);
+
+  useEffect(() => {
     const fetchProfile = async () => {
       const user = auth.currentUser;
       if (user) {
@@ -45,7 +55,7 @@ function PatientProfile() {
   const handleEditToggle = () => {
     setEditMode(!editMode);
   };
- 
+
   const handleSuccess = (result) => {
     setAvatarUrl(result.info.secure_url);
   };
@@ -68,17 +78,6 @@ function PatientProfile() {
       toast.error(error.message);
     }
   };
-
-  // Page Protection
-  useEffect(() => {
-    const checkAuth = async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        router.push("/login"); // Redirect to login if unauthorized
-      }
-    };
-    checkAuth();
-  }, [router]);
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:p-10 md:py-7 p-3">
@@ -177,10 +176,12 @@ function PatientProfile() {
                       Save
                     </Button>
                   )}
-                  <Button
+                   <Button
                     type="button"
                     onClick={handleEditToggle}
                     className={`w-full hover:scale-105 ease-in-out ${
+                      role === "doctor" && router.push("/")
+                    } ${
                       editMode
                         ? "border border-red-500 text-red-500 hover:bg-red-50 bg-white"
                         : "bg-blue-900 hover:bg-blue-700 w-max "
