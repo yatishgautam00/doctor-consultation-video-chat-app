@@ -29,29 +29,37 @@ function DoctorProfile() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const user = auth.currentUser;
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const docRef = doc(firestore, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setName(data.name || "");
-          setDoctorImg(data.doctorImg || "");
-          setExp(data.exp || "");
-          setAddress(data.address || "");
-          setNumpatients(data.numpatients || "");
-          setAbout(data.about || "");
-          setPhone(data.phone || "");
-          setCategory(data.category || "");
-          setEmail(data.email || "");
-          setRole(data.role);
+        try {
+          const docRef = doc(firestore, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setName(data.name || "");
+            setDoctorImg(data.doctorImg || "");
+            setExp(data.exp || "");
+            setAddress(data.address || "");
+            setNumpatients(data.numpatients || "");
+            setAbout(data.about || "");
+            setPhone(data.phone || "");
+            setCategory(data.category || "");
+            setEmail(data.email || "");
+            setRole(data.role);
+          } else {
+            toast.error("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching profile:", error.message);
+          toast.error("Failed to fetch profile data");
         }
+      } else {
+        router.push("/login"); // Redirect to login if not authenticated
       }
-    };
+    });
 
-    fetchProfile();
-  }, []);
+    return () => unsubscribe();
+  }, [router]);
 
   const handleEditToggle = () => {
     setEditMode(!editMode);
@@ -84,17 +92,6 @@ function DoctorProfile() {
       toast.error(error.message);
     }
   };
-
-  // Add Auth State Listener for Quick Protection
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        router.push("/login"); // Redirect to login if unauthorized
-      }
-    });
-
-    return () => unsubscribe();
-  }, [router]);
 
 
   return (
