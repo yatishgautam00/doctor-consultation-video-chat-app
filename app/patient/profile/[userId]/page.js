@@ -24,7 +24,9 @@ function PatientProfile() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
+      if (user) {
+        fetchProfile(user.uid);
+      } else {
         router.push("/login"); // Redirect to login if unauthorized
       }
     });
@@ -32,25 +34,23 @@ function PatientProfile() {
     return () => unsubscribe(); // Cleanup the listener on unmount
   }, [router]);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const docRef = doc(firestore, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setName(data.name || "");
-          setAvatarUrl(data.avatarUrl || "");
-          setEmail(data.email || "");
-          setStatus(data.status || "online"); // Status from Firestore or default to "online"
-          setRole(data.role || "patient"); // Role from Firestore or default to "patient"
-        }
+  const fetchProfile = async (userId) => {
+    try {
+      const docRef = doc(firestore, "users", userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setName(data.name || "");
+        setAvatarUrl(data.avatarUrl || "");
+        setEmail(data.email || "");
+        setStatus(data.status || "online"); // Status from Firestore or default to "online"
+        setRole(data.role || "patient"); // Role from Firestore or default to "patient"
       }
-    };
-
-    fetchProfile();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching profile:", error.message);
+      toast.error("Failed to load profile data");
+    }
+  };
 
   const handleEditToggle = () => {
     setEditMode(!editMode);
@@ -75,10 +75,9 @@ function PatientProfile() {
       }
     } catch (error) {
       console.error("Error updating profile:", error.message);
-      toast.error(error.message);
+      toast.error("Failed to update profile");
     }
   };
-
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:p-10 md:py-7 p-3">
       <div className="col-span-3">
