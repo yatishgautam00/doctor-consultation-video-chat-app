@@ -302,7 +302,7 @@ function DoctorProfile() {
                     editMode ? "justify-between  " : "justify-end "
                   }`}
                 >
-                  {editMode && (
+                  {editMode && email && (
                     <Button
                       type="submit"
                       className="btn hover:scale-105 bg-green-700 hover:bg-green-500 w-full"
