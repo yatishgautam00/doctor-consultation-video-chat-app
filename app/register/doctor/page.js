@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { LuImagePlus } from "react-icons/lu";
 import {
   Select,
   SelectContent,
@@ -168,11 +169,11 @@ function page() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen font-primary p-10 m-2">
+    <div className="flex justify-center items-center h-screen font-primary md:p-10 p-3 md:pt-0 pt-0">
       {/*form*/}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 w-full max-w-2xl shadow-lg p-10"
+        className="space-y-4 w-full max-w-2xl border border-slate-300 rounded-lg shadow-xl lg:p-10 md:p-10 p-5"
       >
         <h1 className="font-secondary text-xl text-center font-semibold text-primary">
           <span className="text-black font-normal text-md">
@@ -214,8 +215,8 @@ function page() {
             >
               {({ open }) => {
                 return (
-                  <Button onClick={() => open()} className="btn btn-outline">
-                    Upload an Image
+                  <Button onClick={() => open()} variant='outline' className="btn border-2 border-slate-600 btn-outline w-min  text-xl ">
+                    <LuImagePlus /> <span className="text-sm pt-1 pl-2">Upload</span>
                   </Button>
                 );
               }}

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { LuImagePlus } from "react-icons/lu";
 
 function page() {
   const [name, setName] = useState("");
@@ -103,11 +104,11 @@ function page() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen font-primary p-10 m-2">
+    <div className="flex justify-center items-center h-screen font-primary md:p-10 p-3 md:pt-0 pt-0">
       {/*form*/}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 w-full max-w-2xl shadow-lg p-10"
+        className="space-y-4 w-full max-w-2xl border border-slate-300 rounded-lg shadow-xl lg:p-10 md:p-10 p-5"
       >
         <h1 className="font-secondary text-xl text-center font-semibold text-primary">
           <span className="text-black font-normal text-md">Sign-Up to</span>{" "}
@@ -115,7 +116,7 @@ function page() {
         </h1>
 
         {/* Display the avatar and refresh button */}
-        <div className="flex items-center space-y-2 justify-between border border-gray-200 p-2">
+        <div className="flex items-center space-y-2 justify-between border  border-gray-200 p-2">
           <img
             src={avatarUrl}
             alt="Avatar"
@@ -123,10 +124,11 @@ function page() {
           />
           <Button
             type="button"
+            variant ='outline'
             className="btn btn-outline"
             onClick={handleRefreshAvatar}
           >
-            New Avatar
+            <LuImagePlus className="text-xl"/><span className="pt-1 pl-2">Avatar</span> 
           </Button>
         </div>
 

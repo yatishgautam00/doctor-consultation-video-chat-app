@@ -68,11 +68,11 @@ function page() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen font-primary p-10 m-2">
+    <div className="flex justify-center items-center h-screen font-primary md:p-10 p-3 md:pt-0 pt-0">
       {/*form*/}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 w-full max-w-2xl shadow-lg p-10"
+        className="space-y-4 w-full border border-slate-300 max-w-2xl rounded-lg shadow-xl lg:p-10 md:p-10 p-5 "
       >
         <h1 className="font-secondary text-xl text-center font-semibold text-primary">
           <span className="text-black font-normal text-md">Login to</span>{" "}
