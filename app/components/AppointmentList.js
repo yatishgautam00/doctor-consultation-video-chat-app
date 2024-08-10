@@ -255,7 +255,7 @@ function AppointmentList({ userId }) {
                     alt="Profile Image"
                     width={50}
                     height={50}
-                    className="rounded-full"
+                    className="rounded-full w-16 h-16 object-contain"
                   />
                 </div>
                 <div className="flex gap-0 pt-1 flex-col truncate flex-grow">
@@ -396,7 +396,7 @@ function AppointmentList({ userId }) {
                     alt="Profile Image"
                     width={50}
                     height={50}
-                    className="rounded-full"
+                    className="rounded-full w-16 h-16 object-contain"
                   />
                 </div>
                 <div className="flex gap-0 pt-1 flex-col truncate flex-grow">
