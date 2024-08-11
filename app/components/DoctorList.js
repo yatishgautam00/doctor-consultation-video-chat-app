@@ -113,7 +113,7 @@ function DoctorList({ heading = "Popular Doctor" }) {
   return (
     <div className="mb-10 px-4 md:px-10">
       <h2 className="font-bold text-xl">{heading}</h2>
-      <div className="grid grid-cols-2 gap-4 md:gap-7 md:grid-cols-2 lg:grid-cols-4 mt-5">
+      <div className="grid grid-cols-2 gap-4 md:gap-10 md:grid-cols-2 lg:grid-cols-4 mt-5">
         {renderDoctors()}
       </div>
     </div>
