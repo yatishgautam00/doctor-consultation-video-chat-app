@@ -2,16 +2,19 @@ import React from "react";
 import { FaRegMessage } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import Image from "next/image";
 function UsersCard({ avatarUrl, name, latestMessage, time, type }) {
   return (
     <div className="flex items-center p-4 border-b border-gray-200 relative hover:cursor-pointer">
       {/* Avatar on the left */}
       <div className="flex-shrink-0 mr-4 relative ">
         <div className="w-12 h-12 rounded-full overflow-hidden">
-          <img
+          <Image
             className="w-full h-full object-cover"
             src={avatarUrl || "/user.png"}
             alt="Avatar"
+            width={50}
+            height={50}
           />
         </div>
       </div>

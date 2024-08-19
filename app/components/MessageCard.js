@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import Image from "next/image";
 
 function MessageCard({ message, me, other }) {
   const isMessageFromMe = message.sender === me.id;
@@ -21,21 +22,25 @@ function MessageCard({ message, me, other }) {
         {/* Avatar on the left or right based on the sender */}
         <div
           className={`w-10 h-10 flex  ${
-            isMessageFromMe ? "ml-2 mr-2 flex-row-reverse" : "mr-2"
+            isMessageFromMe ? "ml-2 mr-2 flex-row-reverse items-center " : "mr-2 "
           }`}
         >
           {isMessageFromMe && (
-            <img
-              className="w-full h-full object-cover rounded-full"
+            <Image
+              className="w-full h-full mb-10 object-cover rounded-full"
               src={me.avatarUrl || me.doctorImg}
               alt="Avatar"
+              width={50}
+              height={50}
             />
           )}
           {!isMessageFromMe && (
-            <img
+            <Image
               className="w-full h-full object-cover rounded-full"
               src={other.avatarUrl || other.doctorImg}
               alt="Avatar"
+              width={50}
+              height={50}
             />
           )}
         </div>
@@ -47,7 +52,7 @@ function MessageCard({ message, me, other }) {
               isMessageFromMe
                 ? "bg-orange-200 self-end"
                 : "bg-[#f0a684db] self-start"
-            }`}
+            }`} 
           >
             {message.image && (
               <img src={message.image} className="max-h-60 w-60 " />

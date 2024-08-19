@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ["res.cloudinary.com"],
-        
-      },
-      
+  images: {
+    dangerouslyAllowSVG: true,
+    domains: ["res.cloudinary.com", "avataaars.io"],
+  },
 };
 
 export default nextConfig;
