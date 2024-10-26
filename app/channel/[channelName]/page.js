@@ -4,6 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from "next/navigation";
 import { auth, firestore } from "@/lib/firebase";
 import Call from "@/app/components/Call";
+import ReceiptDoctor from "../_component/ReceiptDoctor";
 
 export default function Page({ params }) {
     const router = useRouter();
@@ -24,6 +25,7 @@ export default function Page({ params }) {
                 
             </p>
             <Call appId={"056b8e2d9ceb43179933fab6943d9d65"} channelName={params.channelName}></Call>
+            <ReceiptDoctor />
         </main>
     );
 }
